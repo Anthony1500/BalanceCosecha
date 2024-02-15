@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('inicio');
 });
 Route::get('/iniciar_sesion', [App\Http\Controllers\LoginController::class,'showLogin']);
+//Route::get('/iniciar_sesion', [App\Http\Controllers\LoginController::class,'showLogin']);
 
 
 Auth::routes();
