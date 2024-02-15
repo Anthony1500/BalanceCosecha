@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+  @vite('resources/css/index.css')
+  @vite('resources/sass/inicio.scss')
+  @vite('resources/js/inicio.scss', 'module')
 <head>
   <meta charset="UTF-8">
   <title>Cosecha</title>
-  @vite('resources/css/index.css')
-  @vite('resources/sass/inicio.scss')
-  @vite('resources/js/inicio.scss')
+  <link rel="icon" href="../images/cosecha_logo.png" type="image/x-icon">
+ 
 </head>
 <body>
     <div class="scroll-bg"></div>
