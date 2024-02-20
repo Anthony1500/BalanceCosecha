@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   @vite('resources/css/index.css')
-  @vite('resources/sass/inicio.scss')
-  @vite('resources/js/inicio.scss', 'module')
+  @vite('resources/sass/inicio.scss', 'module')
+
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
   <title>Cosecha</title>
-  <link rel="icon" href="../images/cosecha_logo.png" type="image/x-icon">
- 
+
 </head>
 <body>
     <div class="scroll-bg"></div>
@@ -19,7 +19,7 @@
 <p id='head5' class='header'>Bienvenido a Cosecha</p>
 <a href="/iniciar_sesion">
 
-<button >
+<button  class="button button-white button-animate">
    Continuar
     <div class="icon-1">
       <svg
@@ -79,6 +79,15 @@
       </svg>
     </div>
   </button>
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <defs>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10"></feGaussianBlur>
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 21 -7" result="goo"></feColorMatrix>
+        <feBlend in2="goo" in="SourceGraphic" result="mix"></feBlend>
+      </filter>
+    </defs>
+  </svg>
 </a>
 <!--  -->
 

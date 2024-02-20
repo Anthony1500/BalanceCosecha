@@ -1,9 +1,9 @@
 * {
- 
+
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  
+
 }
 
 
@@ -19,12 +19,12 @@ input, button {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   position: relative;
- 
-  
-  
- 
+
+
+
+
 }
 
 .animated-border {
@@ -32,14 +32,14 @@ input, button {
   z-index: 2;
   position: absolute;
   inset: 0;
-  overflow: hidden; /* Agrega esta línea */
-  border-radius: 5px; /* Agrega esta línea */
+  overflow: hidden;
+  border-radius: 5px;
   -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, var(--bw) var(--bw), var(--bw) calc(100% - var(--bw)), calc(100% - var(--bw)) calc(100% - var(--bw)), calc(100% - var(--bw)) var(--bw), var(--bw) var(--bw));
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, var(--bw) var(--bw), var(--bw) calc(100% - var(--bw)), calc(100% - var(--bw)) calc(100% - var(--bw)), calc(100% - var(--bw)) var(--bw), var(--bw) var(--bw));
 
 }
 
-.animated-border:before{ /* Agrega esta línea */
+.animated-border:before{
   content: "";
   position: absolute;
   left: 60%;
@@ -70,7 +70,7 @@ input, button {
   --btn-height: 36px;
   height: 350px;
   filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
- 
+
 }
 .demo button {
   display: block;
@@ -118,8 +118,8 @@ input, button {
   position: absolute;
   inset: 0;
   transition: var(--transition-opacity);
-  max-height: 540px; 
-  overflow-y: auto; 
+  max-height: 540px;
+  overflow-y: auto;
 
 }
 .demo.s--switched .demo__form:first-child {
@@ -257,15 +257,15 @@ input, button {
 .demo__switcher-btn-inner span {
   display: block;
   height: 100%;
-  line-height: calc(var(--btn-height) ); 
+  line-height: calc(var(--btn-height) );
   text-align: center;
   text-transform: uppercase;
   transition: var(--transition-transform);
   will-change: transform;
   position: relative;
-  color: white; 
-  font-size: 11px; 
-  
+  color: white;
+  font-size: 11px;
+
 }
 
 .demo.s--switched .demo__switcher-btn-inner span {
@@ -273,7 +273,7 @@ input, button {
 }
 
 .form {
- 
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -293,10 +293,11 @@ input, button {
   width: 100%;
 }
 .form__field-label {
-  font-size: 12px;
-  color: #7a7676;
-  text-transform: uppercase;
-}
+    font-size: 12px;
+    color: #7a7676;
+    text-transform: capitalize;
+  }
+
 .form__field-input {
   display: block;
   width: 100%;
@@ -313,12 +314,12 @@ input, button {
  border-radius: 10px;
 }
 .form__error {
-  color: #D8000C; 
-  background-color: #FFD2D2; 
-  padding: 10px; 
-  margin-top: 4px; 
-  border-radius: 5px; 
-  font-size: 0.875em; 
+  color: #D8000C;
+  background-color: #FFD2D2;
+  padding: 10px;
+  margin-top: 4px;
+  border-radius: 5px;
+  font-size: 0.875em;
 }
 
 

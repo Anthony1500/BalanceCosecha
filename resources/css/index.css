@@ -13,7 +13,7 @@ button{
     width: 250px;
     height: 70px;
     font-size: 2em;
-    border-radius: 5px;
+    border-radius: 100px;
 
     top: 60vh;
     bottom: 0px;
@@ -24,17 +24,57 @@ button{
 }
 
 button:hover{
-    color: white; /*  blanco */
-    border: 1px solid #FF8C00; /*  naranja oscuro */
-    background: linear-gradient(
-      85deg,
-      #D35400, /* calabaza */
-      #A04000, /* marrón oscuro */
-      #8B4513, /* marrón silla de montar */
-      #5D3F02, /* marrón muy oscuro */
-      #3E270C  /* casi negro */
-    );
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     animation: wind 2s ease-in-out infinite;
+}
+.button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button-white {
+
+    color: white;
+}
+
+.button::after {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all .4s;
+}
+
+.button-white::after {
+    background-color: #e2761d;
+}
+
+.button:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0;
+}
+
+.button-animated {
+    animation: moveInBottom 5s ease-out;
+    animation-fill-mode: backwards;
+}
+
+@keyframes moveInBottom {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
 }
 
 
