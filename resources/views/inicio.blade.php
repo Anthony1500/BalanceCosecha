@@ -17,7 +17,7 @@
 <p id='head3' class='header'>En un lugar</p>
 <p id='head4' class='header'>Sencillo y asombroso todo el tiempo</p>
 <p id='head5' class='header'>Bienvenido a Cosecha</p>
-<a href="/iniciar_sesion">
+<a href="{{ route('LoginForm') }}">
 
 <button  class="button button-white button-animate">
    Continuar

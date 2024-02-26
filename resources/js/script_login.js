@@ -12,7 +12,7 @@ function Demo() {
                             React.createElement(FakeForm, { heading: "Bienvenido de nuevo", fields: ['Correo', 'Contraseña'], submitLabel: "Iniciar sesión" }))),
                     React.createElement("div", { className: "demo__form" },
                         React.createElement("div", { className: "demo__form-content" },
-                            React.createElement(FakeForm, { heading: "Registro", fields: ['Nombre', 'Correo', 'Contraseña'], submitLabel: "Registrarse" })))),
+                            React.createElement(FakeForm, { heading: "Registro", fields: ['Usuario', 'Contraseña', 'Confirmar contraseña'], submitLabel: "Registrarse" })))),
                 React.createElement("div", { className: "demo__switcher" },
                     React.createElement("div", { className: "demo__switcher-inner" },
                         React.createElement("div", { className: "demo__switcher-content" },
@@ -55,10 +55,10 @@ function FakeForm({ heading, fields, submitLabel }) {
     };
 
     return (
-        React.createElement("form", { 
-            className: `form ${isOverflowing ? 'form--overflowing' : ''}`, 
-            onSubmit: (e) => e.preventDefault(), 
-            ref: formRef 
+        React.createElement("form", {
+            className: `form ${isOverflowing ? 'form--overflowing' : ''}`,
+            onSubmit: (e) => e.preventDefault(),
+            ref: formRef
         },
             React.createElement("div", { className: "form__heading" }, heading),
             fields.map((field) => (

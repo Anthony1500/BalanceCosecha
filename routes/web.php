@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('inicio');
+   return view('inicio');
 });
-Route::get('/iniciar_sesion', [App\Http\Controllers\LoginController::class,'showLogin']);
+Route::get('/LoginForm', [App\Http\Controllers\LoginController::class,'showLogin'])->name('LoginForm');
 //Route::get('/iniciar_sesion', [App\Http\Controllers\LoginController::class,'showLogin']);
 
 
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
