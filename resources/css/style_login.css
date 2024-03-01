@@ -5,6 +5,10 @@
   margin: 0;
 
 }
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
 
 
 input, button {
@@ -80,6 +84,9 @@ input, button {
   font-size: 15px;
   cursor: pointer;
 }
+.demo button:disabled {
+    cursor: not-allowed;
+  }
 .demo__inner {
   --demoX1: 0;
   --demoX2: calc(100% - var(--arrow-offset));
@@ -313,6 +320,10 @@ input, button {
   background: #e9a240;
  border-radius: 10px;
 }
+.form__submit--disabled  {
+    background: #f2d6b3;
+    cursor: not-allowed;
+  }
 .form__error {
   color: #D8000C;
   background-color: #FFD2D2;

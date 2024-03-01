@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Registro;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -28,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/LoginForm';
 
     /**
      * Create a new controller instance.
@@ -40,33 +43,45 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+
+    public function register(Request $request)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        try {
+            $regiusuario = $request->input('regiusuario');
+            $regispassword = $request->input('regispassword');
+            $regisagainpassword = $request->input('regisagainpassword');
+
+            // Verifica si las contraseñas coinciden
+            if ($regispassword !== $regisagainpassword) {
+                return response()->json(['error' => 'Las contraseñas no coinciden'], 400);
+            }
+
+            // Crea una nueva instancia del modelo Registro
+            $registro = new Registro;
+            $registro->usuario = $regiusuario;
+            $registro->password = Hash::make($regispassword);- // Asegúrate de encriptar la contraseña
+
+            // Guarda el registro en la base de datos
+            $registro->save();
+
+            // Devuelve el id_registro del registro recién creado
+            return response()->json(['message' => 'Registro exitoso', 'idregistro' => $registro->id_registro], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ha ocurrido un error interno en el servidor.'], 500);
+        }
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

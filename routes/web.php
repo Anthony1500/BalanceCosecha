@@ -14,12 +14,19 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-   return view('inicio');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/', function () {
+        return view('inicio');
+    });
 });
-Route::get('/LoginForm', [App\Http\Controllers\LoginController::class,'showLogin'])->name('LoginForm');
+Route::get('/LoginForm', [App\Http\Controllers\LoginController::class,'showLogin'])->name('LoginForm')->middleware('guest');
+
+
 //Route::get('/iniciar_sesion', [App\Http\Controllers\LoginController::class,'showLogin']);
 
+Auth::routes(['login' => false]);
 
-Auth::routes();
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class,'login'])->name('auth.login');
+Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class,'register'])->name('auth.register');
+
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

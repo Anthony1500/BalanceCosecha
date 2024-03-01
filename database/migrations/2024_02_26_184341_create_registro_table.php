@@ -13,21 +13,24 @@ class CreateRegistroTable extends Migration
      */
     public function up()
     {
-        Schema::create('registro', function (Blueprint $table) {
+        Schema::create('registros', function (Blueprint $table) {
             $table->id('id_registro'); // Clave primaria
-            $table->string('identificacion', 20)->unique(); // Único
-            $table->string('nombre', 50);
-            $table->string('apellido', 50);
-            $table->string('correo', 100)->unique(); // Único
+            $table->string('identificacion', 20)->unique()->nullable();; // Único
+            $table->string('nombre', 50)->nullable();// Nulo
+            $table->string('apellido', 50)->nullable();// Nulo
+            $table->string('email', 100)->unique()->nullable(); // Único
             $table->string('pais', 50)->nullable(); // Nulo
             $table->string('provincia', 50)->nullable(); // Nulo
             $table->string('ciudad', 50)->nullable(); // Nulo
             $table->string('direccion_domicilio', 100)->nullable(); // Nulo
             $table->string('telefono', 15)->nullable(); // Nulo
-            $table->string('usuario', 50)->unique(); // Único
-            $table->string('password', 100);
+            $table->string('usuario', 50)->unique()->nullable(); // Único
+            $table->string('password', 100)->nullable();;
             $table->string('cargo', 50)->nullable(); // Nulo
+            $table->unsignedBigInteger('id_proyecto')->nullable(); // Clave foránea
             $table->timestamps();
+            // Definición de la clave foránea
+            $table->foreign('id_proyecto')->references('id_proyecto')->on('proyecto');
         });
     }
 
@@ -38,6 +41,6 @@ class CreateRegistroTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('registro');
+        Schema::dropIfExists('registros');
     }
 }

@@ -26,11 +26,8 @@ class CreateProyectoTable extends Migration
             $table->integer('numero_plantas_arandanos')->nullable(); // Nulo
             $table->integer('numero_plantas_fresas')->nullable(); // Nulo
             $table->string('coordenadas', 100)->nullable(); // Nulo
-            $table->unsignedBigInteger('id_registro');
             $table->timestamps();
 
-            // Definición de la clave foránea
-            $table->foreign('id_registro')->references('id_registro')->on('registro');
         });
     }
 
