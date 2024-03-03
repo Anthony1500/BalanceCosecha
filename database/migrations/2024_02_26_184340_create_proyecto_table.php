@@ -13,10 +13,10 @@ class CreateProyectoTable extends Migration
      */
     public function up()
     {
-        Schema::create('proyecto', function (Blueprint $table) {
+        Schema::create('proyectos', function (Blueprint $table) {
             $table->id('id_proyecto'); // Clave primaria
-            $table->string('nombre_proyecto', 100)->unique(); // Único
-            $table->string('ruc', 20)->unique(); // Único
+            $table->string('nombre_proyecto', 100)->unique()->nullable(); // Único
+            $table->string('ruc', 20)->unique()->nullable(); // Único
             $table->string('socios', 100)->nullable(); // Nulo
             $table->string('pais', 50)->nullable(); // Nulo
             $table->string('provincia', 50)->nullable(); // Nulo
@@ -38,6 +38,6 @@ class CreateProyectoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('proyecto');
+        Schema::dropIfExists('proyectos');
     }
 }

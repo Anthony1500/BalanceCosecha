@@ -21,6 +21,12 @@ Route::middleware(['guest'])->group(function () {
 });
 Route::get('/LoginForm', [App\Http\Controllers\LoginController::class,'showLogin'])->name('LoginForm')->middleware('guest');
 
+Route::middleware(['guest'])->group(function () {
+Route::get('/loadscreen', function () {
+    $path = resource_path('json/loadscreen.json');
+    return response()->file($path);
+});
+});
 
 //Route::get('/iniciar_sesion', [App\Http\Controllers\LoginController::class,'showLogin']);
 
@@ -28,5 +34,7 @@ Auth::routes(['login' => false]);
 
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class,'login'])->name('auth.login');
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class,'register'])->name('auth.register');
+Route::get('/RegisterForm/{id}', [App\Http\Controllers\RegisterController::class,'registerform'])->name('RegisterForm');
+
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

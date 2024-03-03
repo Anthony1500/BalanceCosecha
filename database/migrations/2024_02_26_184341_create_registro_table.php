@@ -30,7 +30,7 @@ class CreateRegistroTable extends Migration
             $table->unsignedBigInteger('id_proyecto')->nullable(); // Clave foránea
             $table->timestamps();
             // Definición de la clave foránea
-            $table->foreign('id_proyecto')->references('id_proyecto')->on('proyecto');
+            $table->foreign('id_proyecto')->references('id_proyecto')->on('proyectos');
         });
     }
 

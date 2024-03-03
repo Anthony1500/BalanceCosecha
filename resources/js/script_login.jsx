@@ -9,10 +9,11 @@ const fieldsData = [
     { id: 'logpassword', label: 'Contraseña', type: 'password' },
 ];
 const fieldsDataregister = [
-    { id: 'regiusuario', label: 'Usuario', type: 'text' },
-    { id: 'regispassword', label: 'Contraseña', type: 'password' },
-    { id: 'regisagainpassword', label: 'Confirmar contraseña', type: 'password' },
+    { id: 'regidentificacion', label: 'Número de Cédula', type: 'number', autocomplete: 'cc-number', maxLength: 10 },
+    { id: 'regispassword', label: 'Contraseña', type: 'password', autocomplete: 'new-password' },
+    { id: 'regisagainpassword', label: 'Confirmar contraseña', type: 'password', autocomplete: 'new-password' },
 ];
+
 
 function ParentComponent() {
     const [switched, setSwitched] = useState(false);
@@ -79,12 +80,22 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
     }, [values]);
 
     const handleChange = (id, value, type, label) => {
+        let newErrors = { ...errors };
+
+        // Si el id es 'regidentificacion', verifica si el valor es un número de hasta 10 dígitos
+        if (id === 'regidentificacion' && !/^\d{0,10}$/.test(value)) {
+           return;
+        } else {
+            newErrors[id] = null;
+        }
+
+        setErrors(newErrors);
+
         setValues((prevValues) => {
             const updatedValues = { ...prevValues, [id]: value };
             return updatedValues;
         });
     };
-
 
 
     React.useEffect(() => {
@@ -98,7 +109,13 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
                 newErrors[id] = `${label} no puede estar vacío.`;
             } else if (type === 'email' && !/\S+@\S+\.\S+/.test(value)) {
                 newErrors[id] = 'Correo inválido.';
-            } else {
+            } else if (id === 'regidentificacion') {
+                if (!/^\d{10}$/.test(value)) {
+                    newErrors[id] = 'Número de Cédula inválido. Deben ser exactamente 10 números.';
+                }else{
+                    newErrors[id] = null;
+                }
+            }else {
                 newErrors[id] = null;
             }
             if (switched!==false && id === 'regispassword') {
@@ -145,6 +162,7 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
     async function handleSubmit(e) {
         e.preventDefault();
         const url = switched ? registerUrl : loginUrl;
+        document.getElementById('lottie-animation').style.display = 'block';
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -155,7 +173,7 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
                 },
                 body: JSON.stringify(values)
             });
-
+            document.getElementById('lottie-animation').style.display = 'none';
             // Obtén el modal y el texto de alerta
             var modal = document.getElementById("myalertdialogerror");
             var alertText = modal.querySelector(".alertText");
@@ -164,7 +182,7 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
             const data = await response.json();
 
             if (!response.ok) {
-               
+
                 // texto de alerta con el mensaje de error
                 alertText.textContent = `Error ${response.status}: ${data.error}`;
                 // clase 'error' al div de alerta
@@ -182,9 +200,10 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
                 }, 5000);
 
             } else {
-
-                // texto de alerta con el mensaje
-                alertText.textContent = data.message;
+                document.getElementById('lottie-animation').style.display = 'none';
+                window.location.href = `/RegisterForm/${data.idregistro}`;
+                 // texto de alerta con el mensaje
+                alertText.textContent = 'Registro exitoso';
                 // div de alerta con la clase 'success'
                 alertDiv.classList.remove('error');
                 alertDiv.classList.add('success');
@@ -200,7 +219,7 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
                 }, 5000);
             }
         } catch (error) {
-
+             document.getElementById('lottie-animation').style.display = 'none';
             // texto de alerta con el mensaje de error
             alertText.textContent = `Hubo un error al enviar el formulario: ${error.message}`;
             // clase 'error' al div de alerta
