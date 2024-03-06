@@ -21,5 +21,8 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    optimizeDeps: {
+        include: ['buffer']
+    }
 });
 

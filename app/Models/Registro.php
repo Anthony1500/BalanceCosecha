@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Registro extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+      protected $primaryKey = 'id_registro';
+
     protected $fillable = [
         'usuario',
         'password',
@@ -23,7 +26,7 @@ class Registro extends Authenticatable
         'direccion_domicilio',
         'telefono',
         'cargo',
-        'id_proyecto', 
+        'id_proyecto',
     ];
 
     protected $hidden = ['password'];
@@ -32,4 +35,12 @@ class Registro extends Authenticatable
     {
         return $this->belongsTo(Proyecto::class, 'id_proyecto');
     }
+
+
+
+
+
+
+
+
 }

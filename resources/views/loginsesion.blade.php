@@ -54,5 +54,28 @@ var registerUrl = "{{ route('auth.register') }}";
   </label>
 </div>
 
+
+
+@if (session('message'))
+<div id="myalertdialogwarning" class="alertdialog">
+  <label>
+    <input type="checkbox" class="alertCheckbox" autocomplete="off" />
+    <div class="alert success">
+      <span class="alertClose">X</span>
+      <span class="alertText">{{ session('message') }}
+      <br class="clear"/></span>
+    </div>
+  </label>
+</div>
+<script>
+    window.onload = function() {
+        showAlert('{{ session('message') }}');
+    };
+</script>
+@endif
+
+
+
+
 </body>
 </html>

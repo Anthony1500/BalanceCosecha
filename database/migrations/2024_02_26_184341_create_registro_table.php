@@ -22,9 +22,9 @@ class CreateRegistroTable extends Migration
             $table->string('pais', 50)->nullable(); // Nulo
             $table->string('provincia', 50)->nullable(); // Nulo
             $table->string('ciudad', 50)->nullable(); // Nulo
-            $table->string('direccion_domicilio', 100)->nullable(); // Nulo
+            $table->string('direccion_domicilio', 500)->nullable(); // Nulo
             $table->string('telefono', 15)->nullable(); // Nulo
-            $table->string('usuario', 50)->unique()->nullable(); // Único
+            $table->string('usuario', 100)->unique()->nullable(); // Único
             $table->string('password', 100)->nullable();;
             $table->string('cargo', 50)->nullable(); // Nulo
             $table->unsignedBigInteger('id_proyecto')->nullable(); // Clave foránea

@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Cosecha</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+
    @vite('resources/css/registerform.css')
    @vite('resources/css/style_sky.css')
+   @vite('resources/css/alertdialog.css')
    @vite('resources/js/script.js')
    @vite('resources/js/registerform.js')
+   @vite('resources/js/alertdialog.js')
    @include('loading')
 </head>
 <body>
@@ -25,7 +30,7 @@
             </a>
         </li>
         <li>
-          <a href="#icons">
+          <a href="#register">
             <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="24" width="24" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
                 <g transform="translate(0 -1028.4)">
                  <path d="m3 1033.4c-1.1046 0-2 0.9-2 2v10 1c0 1.1 0.8954 2 2 2h16 2c1.105 0 2-0.9 2-2v-1-9-1c0-1.1-0.895-2-2-2h-2-14-2z" fill="#95a5a6"/>
@@ -38,7 +43,7 @@
             Completar Registro</a>
         </li>
         <li>
-          <a href="#validation">
+          <a href="#projects">
             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="548.169px" height="548.169px" viewBox="0 0 548.169 548.169" style="enable-background:new 0 0 548.169 548.169;"
             xml:space="preserve">
@@ -110,7 +115,7 @@
         </li>
 
         <li>
-          <a href="#contribute">
+          <a href="#save">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             	 viewBox="0 0 100.25 100.25" style="enable-background:new 0 0 100.25 100.25;" xml:space="preserve">
             <path d="M83.061,27.94l-11-11c-0.281-0.281-0.663-0.439-1.061-0.439H18c-0.828,0-1.5,0.671-1.5,1.5v64c0,0.829,0.672,1.5,1.5,1.5h64
@@ -128,7 +133,7 @@
         <div class="href-target" id="intro"></div>
         <h1 class="package-name">Registro</h1>
         <p>
-            Bienvenido usuario con número de identificación: <strong>{{ $idregistro }}</strong> a nuestra página de registro. Aquí es donde podras completar los datos para unirte a nuestra comunidad. Se detalla a continuación las diferentes secciones :
+            Bienvenido usuario con número de identificación: <strong>{{ session('identificacion') }}</strong> a nuestra página de registro. Aquí es donde podras completar los datos para unirte a nuestra comunidad. Se detalla a continuación las diferentes secciones :
         </p>
 
         <strong>Completar Registro:</strong>
@@ -155,7 +160,7 @@
 
 
     <section>
-      <div class="href-target" id="icons"></div>
+      <div class="href-target" id="register"></div>
       <h1>
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
@@ -177,68 +182,81 @@
       </h1>
       <p>
         Por favor, completa los siguientes campos para continuar:
-
       </p>
 
-      <div class="nice-form-group">
-        <label>Identificación</label>
-        <input type="number" placeholder="000000" value="" class="icon-left" />
-      </div>
-
-      <div class="nice-form-group">
-        <label>Nombre</label>
-        <input type="text" placeholder="Ingrese su nombre" value="" class="icon-left" />
-      </div>
-      <div class="nice-form-group">
-        <label>Apellido</label>
-        <input type="text" placeholder="Ingrese su apellido" value="" class="icon-left" />
-      </div>
-      <div class="nice-form-group">
-        <label>Correo electrónico</label>
-        <input type="email" placeholder="Tu correo" value="" class="icon-left" />
-      </div>
+      <form>
+        <div class="nice-form-group">
+          <label>Nombre</label>
+          <input type="text" name="nombre" placeholder="Ingrese su nombre" value="" class="icon-right" required />
+        </div>
+        <div class="nice-form-group">
+          <label>Apellido</label>
+          <input type="text" name="apellido" placeholder="Ingrese su apellido" value="" class="icon-right" required/>
+        </div>
+        <div class="nice-form-group">
+          <label>Usuario</label>
+          <input type="text" name="usuario" placeholder="Ingrese un nombre de Usuario" value="" class="icon-right" required />
+        </div>
+        <div class="nice-form-group">
+          <label>Correo electrónico</label>
+          <input type="email" name="email" placeholder="Ingrese su correo" value="" class="icon-right" required />
+        </div>
 
       <div class="nice-form-group">
         <label>País</label>
-        <input type="text" placeholder="Ingrese su país" value="" class="icon-left" />
-      </div>
+        <div class="nice-form-group" style="display: flex; align-items: center;">
+          <select id="countrySelect" name="pais" class="icon-right" required>
+            <option value="" disabled selected hidden></option>
+            <option disabled placeholder="Selecciona un país">Selecciona un país</option>
+            <!-- Los países se llenarán aquí con JavaScript -->
+          </select>
+          <img id="flagImage" src="" alt="Bandera del país seleccionado" style="margin-left: 9px; display: none;">
+         </div>
+       </div>
       <div class="nice-form-group">
-        <label>Provincia</label>
-        <input type="text" placeholder="Ingrese su provincia" value="" class="icon-left" />
-      </div>
-      <div class="nice-form-group">
-        <label>Ciudad</label>
-        <input type="text" placeholder="Ingrese su ciudad" value="" class="icon-left" />
-      </div>
-      <div class="nice-form-group">
-        <label>Dirección domiciliaria</label>
-        <input type="text" placeholder="Ingrese su dirección" value="" class="icon-left" />
-      </div>
-      <div class="nice-form-group">
-        <label>Teléfono</label>
-        <input type="tel" placeholder="Tu teléfono" value="" class="icon-right" />
-      </div>
+         <label>Provincia</label>
+         <input type="text" name="provincia" placeholder="Ingrese su provincia" value="" class="icon-right" required/>
+       </div>
+       <div class="nice-form-group">
+         <label>Ciudad</label>
+         <input type="text" name="ciudad" placeholder="Ingrese su ciudad" value="" class="icon-right"required />
+       </div>
+       <div class="nice-form-group">
+         <label>Dirección domiciliaria</label>
+         <input type="text" name="direccion_domicilio" placeholder="Ingrese su dirección" value="" class="icon-right" required />
+       </div>
+       <div class="nice-form-group">
+         <label>Teléfono</label>
+         <input type="tel" name="telefono" placeholder="Ingrese su teléfono" value="" class="icon-right" required />
+       </div>
 
-      <div class="nice-form-group">
-        <label>Cargo</label>
-        <input type="text" placeholder="Ingrese su cargo" value="" class="icon-right" />
-      </div>
+       <div class="nice-form-group">
+         <label>Cargo</label>
+         <input type="text"  name="cargo" placeholder="Ingrese su cargo" value="" class="icon-right" required/>
+       </div>
 
 
-
-      <details>
+       <details>
         <summary>
-          <div class="toggle-code">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h14l2.707 2.707a1 1 0 0 1 .293.707V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm3 1v5h9V4H7zm-1 8v7h12v-7H6zm7-7h2v3h-2V5z" fill="#000"/></svg>
-            Guardar
-          </div>
-        </summary>
+       <button id="btnsave" type="submit" class="toggle-code">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="21"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h14l2.707 2.707a1 1 0 0 1 .293.707V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm3 1v5h9V4H7zm-1 8v7h12v-7H6zm7-7h2v3h-2V5z" fill="#000"/></svg>
+        Guardar
+    </button>
+    <button id="btnedit"  type="button" class="toggle-code" style="background-color: #0066cc; color: white;display: none;">
+    <svg width="22" height="21" viewBox="0 -0.222 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.7 5.12758L19.266 6.37458C19.4172 6.51691 19.5025 6.71571 19.5013 6.92339C19.5002 7.13106 19.4128 7.32892 19.26 7.46958L18.07 8.89358L14.021 13.7226C13.9501 13.8037 13.8558 13.8607 13.751 13.8856L11.651 14.3616C11.3755 14.3754 11.1356 14.1751 11.1 13.9016V11.7436C11.1071 11.6395 11.149 11.5409 11.219 11.4636L15.193 6.97058L16.557 5.34158C16.8268 4.98786 17.3204 4.89545 17.7 5.12758Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12.033 7.61865C12.4472 7.61865 12.783 7.28287 12.783 6.86865C12.783 6.45444 12.4472 6.11865 12.033 6.11865V7.61865ZM9.23301 6.86865V6.11865L9.23121 6.11865L9.23301 6.86865ZM5.50001 10.6187H6.25001L6.25001 10.617L5.50001 10.6187ZM5.50001 16.2437L6.25001 16.2453V16.2437H5.50001ZM9.23301 19.9937L9.23121 20.7437H9.23301V19.9937ZM14.833 19.9937V20.7437L14.8348 20.7437L14.833 19.9937ZM18.566 16.2437H17.816L17.816 16.2453L18.566 16.2437ZM19.316 12.4937C19.316 12.0794 18.9802 11.7437 18.566 11.7437C18.1518 11.7437 17.816 12.0794 17.816 12.4937H19.316ZM15.8863 6.68446C15.7282 6.30159 15.2897 6.11934 14.9068 6.2774C14.5239 6.43546 14.3417 6.87397 14.4998 7.25684L15.8863 6.68446ZM18.2319 9.62197C18.6363 9.53257 18.8917 9.13222 18.8023 8.72777C18.7129 8.32332 18.3126 8.06792 17.9081 8.15733L18.2319 9.62197ZM8.30001 16.4317C7.8858 16.4317 7.55001 16.7674 7.55001 17.1817C7.55001 17.5959 7.8858 17.9317 8.30001 17.9317V16.4317ZM15.767 17.9317C16.1812 17.9317 16.517 17.5959 16.517 17.1817C16.517 16.7674 16.1812 16.4317 15.767 16.4317V17.9317ZM12.033 6.11865H9.23301V7.61865H12.033V6.11865ZM9.23121 6.11865C6.75081 6.12461 4.7447 8.13986 4.75001 10.6203L6.25001 10.617C6.24647 8.96492 7.58269 7.62262 9.23481 7.61865L9.23121 6.11865ZM4.75001 10.6187V16.2437H6.25001V10.6187H4.75001ZM4.75001 16.242C4.7447 18.7224 6.75081 20.7377 9.23121 20.7437L9.23481 19.2437C7.58269 19.2397 6.24647 17.8974 6.25001 16.2453L4.75001 16.242ZM9.23301 20.7437H14.833V19.2437H9.23301V20.7437ZM14.8348 20.7437C17.3152 20.7377 19.3213 18.7224 19.316 16.242L17.816 16.2453C17.8195 17.8974 16.4833 19.2397 14.8312 19.2437L14.8348 20.7437ZM19.316 16.2437V12.4937H17.816V16.2437H19.316ZM14.4998 7.25684C14.6947 7.72897 15.0923 8.39815 15.6866 8.91521C16.2944 9.44412 17.1679 9.85718 18.2319 9.62197L17.9081 8.15733C17.4431 8.26012 17.0391 8.10369 16.6712 7.7836C16.2897 7.45165 16.0134 6.99233 15.8863 6.68446L14.4998 7.25684ZM8.30001 17.9317H15.767V16.4317H8.30001V17.9317Z" fill="#000000"/>
+    </svg>
+    Editar
+    </button>
+ </summary>
 
-      </details>
+</details>
+      </form>
     </section>
 
     <section>
-      <div class="href-target" id="validation"></div>
+      <div class="href-target" id="projects"></div>
       <h1>
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 93.83" style="enable-background:new 0 0 122.88 93.83" xml:space="preserve"><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;}</style><g><path class="st0" d="M98.24,1.06c5.29,0,9.58,4.29,9.58,9.58c0,5.29-4.29,9.58-9.58,9.58c-1.89,0-3.66-0.55-5.15-1.5 c-0.06,0.08-0.13,0.16-0.21,0.23l-7.11,6.85c4.74,5.3,7.75,12.18,8.13,19.75h9.94c0.75-4.54,4.7-8,9.45-8 c5.29,0,9.58,4.29,9.58,9.58c0,5.29-4.29,9.58-9.58,9.58c-4.49,0-8.26-3.09-9.3-7.27c-0.05,0-0.1,0.01-0.15,0.01h-9.99 c-0.53,7.47-3.61,14.23-8.38,19.41l7.53,7c0.07,0.07,0.14,0.14,0.2,0.22c1.46-0.9,3.18-1.42,5.03-1.42c5.29,0,9.58,4.29,9.58,9.58 c0,5.29-4.29,9.58-9.58,9.58s-9.58-4.29-9.58-9.58c0-2.04,0.64-3.93,1.73-5.49l-0.03-0.03l-7.69-7.14 c-5.59,4.76-12.84,7.63-20.75,7.63c-8.18,0-15.64-3.06-21.3-8.1l-7.76,7.56l-0.01,0.01c1.06,1.54,1.67,3.4,1.67,5.41 c0,5.29-4.29,9.58-9.58,9.58s-9.58-4.29-9.58-9.58c0-5.29,4.29-9.58,9.58-9.58c1.87,0,3.62,0.54,5.1,1.47 c0.03-0.04,0.06-0.07,0.1-0.1l7.73-7.53c-4.55-5.17-7.46-11.81-7.92-19.13l-10.9,0.11l-0.06,0c-0.88,4.39-4.75,7.7-9.4,7.7 C4.29,57.03,0,52.74,0,47.45c0-5.29,4.29-9.58,9.58-9.58c4.6,0,8.45,3.24,9.37,7.57l0.05,0l10.92-0.11 c0.42-7.39,3.35-14.1,7.94-19.32l-8.13-7.77c-0.06-0.06-0.12-0.12-0.17-0.19c-1.33,0.71-2.86,1.1-4.47,1.1 c-5.29,0-9.58-4.29-9.58-9.58C15.51,4.29,19.8,0,25.09,0c5.29,0,9.58,4.29,9.58,9.58c0,2.26-0.78,4.34-2.1,5.98l8.04,7.68 c5.66-5.04,13.12-8.1,21.29-8.1c8.08,0,15.46,2.99,21.1,7.93l7.18-6.92c0.04-0.04,0.09-0.08,0.14-0.12 c-1.05-1.54-1.66-3.39-1.66-5.39C88.66,5.35,92.95,1.06,98.24,1.06L98.24,1.06z M57.41,50.48l2.67,7.85l1.34-4.66l-0.66-0.72 c-0.3-0.43-0.36-0.81-0.2-1.14c0.36-0.71,1.09-0.57,1.78-0.57c0.72,0,1.61-0.14,1.84,0.77c0.08,0.3-0.02,0.62-0.23,0.94l-0.66,0.72 l1.34,4.66l2.42-7.85c1.74,1.57,6.91,1.88,8.83,2.96c0.61,0.34,1.16,0.77,1.6,1.35c0.67,0.88,1.08,2.04,1.19,3.5l0.4,3.89 c-0.1,1.04-0.69,1.64-1.84,1.72H62.37H47.24c-1.16-0.09-1.75-0.69-1.84-1.72l0.4-3.89c0.11-1.47,0.52-2.62,1.19-3.5 c0.44-0.58,0.99-1.01,1.6-1.35C50.51,52.36,55.67,52.05,57.41,50.48L57.41,50.48z M56.69,38.61c0.03,0.06,0.04,0.12,0.04,0.19 c0,0.03,0,0.06-0.01,0.1l0.05,0.37c-0.13,0.03-0.25,0.03-0.37,0.03c-0.05,0.02-0.11,0.03-0.16,0.03c-0.33,0.01-0.57,0.07-0.73,0.18 c-0.08,0.06-0.15,0.13-0.18,0.21c-0.05,0.1-0.07,0.22-0.06,0.36c0.01,0.44,0.25,1.01,0.7,1.68l0.01,0.01l0,0l1.49,2.37 c0.6,0.95,1.22,1.91,1.99,2.62c0.73,0.67,1.63,1.13,2.8,1.13c1.28,0,2.21-0.47,2.97-1.18c0.8-0.74,1.43-1.77,2.05-2.8l1.68-2.76 c0.34-0.77,0.44-1.24,0.33-1.46c-0.07-0.15-0.37-0.18-0.87-0.14c-0.15,0.01-0.3-0.04-0.4-0.14c-0.04,0-0.08,0-0.12-0.01l0.02-0.12 c-0.03-0.06-0.05-0.12-0.06-0.19c-0.02-0.17,0.06-0.33,0.18-0.44l0.35-1.77c-3.07-0.04-5.17-0.57-7.66-2.16 c-0.82-0.52-1.06-1.12-1.88-1.06c-0.62,0.12-1.14,0.4-1.55,0.84c-0.4,0.43-0.69,1.01-0.89,1.75L56.69,38.61L56.69,38.61z M69.4,38.62c0.36,0.11,0.62,0.31,0.78,0.63c0.25,0.51,0.15,1.27-0.32,2.35l0,0c-0.01,0.02-0.02,0.04-0.03,0.06l-1.7,2.8 c-0.66,1.08-1.33,2.17-2.22,3.01c-0.93,0.88-2.09,1.46-3.66,1.45c-1.47,0-2.58-0.57-3.49-1.4c-0.87-0.8-1.54-1.82-2.17-2.82 l-1.49-2.37c-0.56-0.83-0.84-1.59-0.86-2.21c-0.01-0.3,0.04-0.58,0.15-0.82c0.12-0.25,0.3-0.47,0.54-0.63 c0.12-0.08,0.25-0.15,0.4-0.2c-0.09-1.27-0.12-2.85-0.06-4.17c0.03-0.32,0.09-0.64,0.18-0.97c0.38-1.36,1.34-2.46,2.52-3.21 c0.42-0.27,0.87-0.49,1.36-0.66c2.87-1.04,6.66-0.47,8.7,1.73c0.83,0.9,1.35,2.08,1.46,3.66L69.4,38.62L69.4,38.62z M81.78,27.27 c-0.06-0.05-0.11-0.1-0.16-0.15c-0.03-0.03-0.05-0.06-0.08-0.09c-5.07-4.94-11.99-7.98-19.62-7.98c-7.65,0-14.58,3.05-19.65,8 c-0.06,0.09-0.13,0.17-0.2,0.25c-0.1,0.1-0.2,0.19-0.32,0.27c-4.92,5.07-7.96,11.98-7.96,19.6c0,7.77,3.15,14.8,8.24,19.89 c5.09,5.09,12.12,8.24,19.89,8.24c7.77,0,14.8-3.15,19.89-8.24c5.09-5.09,8.24-12.12,8.24-19.89c0-7.77-3.15-14.8-8.24-19.89 L81.78,27.27L81.78,27.27z"/></g></svg>
         Tus proyectos
@@ -356,7 +374,7 @@ Crear Nuevo Proyecto
     </section>
 
         <section>
-      <div class="href-target" id="contribute"></div>
+      <div class="href-target" id="save"></div>
       <h1>
         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             	 viewBox="0 0 100.25 100.25" style="enable-background:new 0 0 100.25 100.25;" xml:space="preserve">
@@ -381,14 +399,40 @@ Crear Nuevo Proyecto
   </main>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.14/lottie.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>console.clear();
     var loginUrl = "{{ route('auth.login') }}";
-    var registerUrl = "{{ route('auth.register') }}";
+    var registerUrl = "{{ route('auth.completeregister') }}";
+    var supportedCountryCodes = "{{ env('SUPPORTED_COUNTRY_CODES') }}".split(',');
+    var Email = "{{ env('EMAIL') }}";
+    var api_Token = "{{ env('API_TOKEN') }}";
     </script>
 
      <script>
      !function(){function a(a,b){return a.zIndex===b.zIndex?0:a.zIndex<b.zIndex?-1:1}function b(){this.width=this.width?this.width:this.image.width,this.height=this.height?this.height:this.image.height}var c=window,d=document,e=d.documentElement,f=d.body,g=c.requestAnimationFrame||c.mozRequestAnimationFrame||c.webkitRequestAnimationFrame||c.msRequestAnimationFrame||c.oRequestAnimationFrame||function(a){c.setTimeout(a,20)},h=function(){},i={tracking:"scroll",trackingInvert:!1,x:0,y:0,damping:1,canvas:void 0,className:"",parent:document.body,elements:void 0,animating:!0,fullscreen:!0,preRender:h,postRender:h},j=!1,k=0,l=0,m=function(){k=e.scrollLeft||f.scrollLeft,l=e.scrollTop||f.scrollTop},n=!1,o=0,p=0,q=function(a){o=a.touches?a.touches[0].clientX:a.clientX,p=a.touches?a.touches[0].clientY:a.clientY};if(!c.CanvasRenderingContext2D)return c.Canvallax=function(){return!1};c.Canvallax=function s(a){if(!(this instanceof s))return new s(a);var b=this;return s.extend(this,i,a),b.canvas=b.canvas||d.createElement("canvas"),b.canvas.className+=" canvallax "+b.className,b.parent.insertBefore(b.canvas,b.parent.firstChild),b.fullscreen?(b.resizeFullscreen(),c.addEventListener("resize",b.resizeFullscreen.bind(b))):b.resize(b.width,b.height),b.ctx=b.canvas.getContext("2d"),b.elements=[],a&&a.elements&&b.addElements(a.elements),b.damping=!b.damping||b.damping<1?1:b.damping,b.render(),b},Canvallax.prototype={_x:0,_y:0,add:function(b){for(var c=b.length?b:arguments,d=c.length,e=0;d>e;e++)this.elements.push(c[e]);return this.elements.sort(a),this},remove:function(a){var b=this.elements.indexOf(a);return b>-1&&this.elements.splice(b,1),this},render:function(){var a=this,b=0,d=a.elements.length,e=0,f=0,h=a.fullscreen||"pointer"!==a.tracking;for(a.animating&&(a.animating=g(a.render.bind(a))),a.tracking&&("scroll"===a.tracking?(j||(j=!0,m(),c.addEventListener("scroll",m),c.addEventListener("touchmove",m)),a.x=k,a.y=l):"pointer"===a.tracking&&(n||(n=!0,c.addEventListener("mousemove",q),c.addEventListener("touchmove",q)),h||(e=a.canvas.offsetLeft,f=a.canvas.offsetTop,h=o>=e&&o<=e+a.width&&p>=f&&p<=f+a.height),h&&(a.x=-o+e,a.y=-p+f)),a.x=!h||a.trackingInvert!==!0&&"invertx"!==a.trackingInvert?a.x:-a.x,a.y=!h||a.trackingInvert!==!0&&"inverty"!==a.trackingInvert?a.y:-a.y),a._x+=(-a.x-a._x)/a.damping,a._y+=(-a.y-a._y)/a.damping,a.ctx.clearRect(0,0,a.width,a.height),a.preRender(a.ctx,a);d>b;b++)a.ctx.save(),a.elements[b]._render(a.ctx,a),a.ctx.restore();return a.postRender(a.ctx,a),this},resize:function(a,b){return this.width=this.canvas.width=a,this.height=this.canvas.height=b,this},resizeFullscreen:function(){return this.resize(c.innerWidth,c.innerHeight)},play:function(){return this.animating=!0,this.render()},pause:function(){return this.animating=!1,this}},Canvallax.createElement=function(){function a(a){var c=b(a);return a._pointCache&&a._pointChecksum===c||(a._pointCache=a.getTransformPoint(),a._pointChecksum=c),a._pointCache}function b(a){return[a.transformOrigin,a.x,a.y,a.width,a.height,a.size].join(" ")}var c=Math.PI/180,d={x:0,y:0,distance:1,fixed:!1,opacity:1,fill:!1,stroke:!1,lineWidth:!1,transformOrigin:"center center",scale:1,rotation:0,preRender:h,render:h,postRender:h,init:h,crop:!1,getTransformPoint:function(){var a=this,b=a.transformOrigin.split(" "),c={x:a.x,y:a.y};return"center"===b[0]?c.x+=a.width?a.width/2:a.size:"right"===b[0]&&(c.x+=a.width?a.width:2*a.size),"center"===b[1]?c.y+=a.height?a.height/2:a.size:"bottom"===b[1]&&(c.y+=a.height?a.height:2*a.size),c},_render:function(b,d){var e=this,f=e.distance||1,g=d._x,h=d._y,i=a(e);return e.preRender.call(e,b,d),e.blend&&(d.ctx.globalCompositeOperation=e.blend),d.ctx.globalAlpha=e.opacity,d.ctx.translate(i.x,i.y),e.scale===!1?(g*=f,h*=f):d.ctx.scale(f,f),e.fixed||d.ctx.translate(g,h),e.scale!==!1&&d.ctx.scale(e.scale,e.scale),e.rotation&&d.ctx.rotate(e.rotation*c),d.ctx.translate(-i.x,-i.y),e.crop&&(b.beginPath(),"function"==typeof e.crop?e.crop.call(e,b,d):b.rect(e.crop.x,e.crop.y,e.crop.width,e.crop.height),b.clip(),b.closePath()),e.outline&&(b.beginPath(),b.rect(e.x,e.y,e.width||2*e.size,e.height||2*e.size),b.closePath(),b.strokeStyle=e.outline,b.stroke()),e.render.call(e,b,d),this.fill&&(b.fillStyle=this.fill,b.fill()),this.stroke&&(this.lineWidth&&(b.lineWidth=this.lineWidth),b.strokeStyle=this.stroke,b.stroke()),e.postRender.call(e,b,d),e},clone:function(a){var a=Canvallax.extend({},this,a);return new this.constructor(a)}};return function(a){function b(a){return this instanceof b?(Canvallax.extend(this,a),this.init.apply(this,arguments),this):new b(a)}return b.prototype=Canvallax.extend({},d,a),b.prototype.constructor=b,b.clone=b.prototype.clone,b}}(),Canvallax.extend=function(a){a=a||{};var b=arguments.length,c=1;for(1===arguments.length&&(a=this,c=0);b>c;c++)if(arguments[c])for(var d in arguments[c])arguments[c].hasOwnProperty(d)&&(a[d]=arguments[c][d]);return a};var r=2*Math.PI;Canvallax.Circle=Canvallax.createElement({size:20,render:function(a){a.beginPath(),a.arc(this.x+this.size,this.y+this.size,this.size,0,r),a.closePath()}}),Canvallax.Element=Canvallax.createElement(),Canvallax.Image=Canvallax.createElement({src:null,image:null,width:null,height:null,init:function(a){this.image=this.image&&1===this.image.nodeType?this.image:a&&1===a.nodeType?a:new Image,b.bind(this)(),this.image.onload=b.bind(this),this.image.src=this.image.src||a.src||a},render:function(a){this.image&&a.drawImage(this.image,this.x,this.y,this.width,this.height)}});var r=2*Math.PI;Canvallax.Polygon=Canvallax.createElement({sides:6,size:20,render:function(a){var b=this.sides;for(a.translate(this.x+this.size,this.y+this.size),a.beginPath(),a.moveTo(this.size,0);b--;)a.lineTo(this.size*Math.cos(b*r/this.sides),this.size*Math.sin(b*r/this.sides));a.closePath()}}),Canvallax.Rectangle=Canvallax.createElement({width:100,height:100,render:function(a){a.beginPath(),a.rect(this.x,this.y,this.width,this.height),a.closePath()}})}();</script>
 
 
+     <div id="myalertdialogerror" class="alertdialog">
+  <label>
+    <input type="checkbox" class="alertCheckbox" autocomplete="off" />
+    <div class="alert success">
+      <span class="alertClose">X</span>
+      <span class="alertText">
+      <br class="clear"/></span>
+    </div>
+  </label>
+</div>
+
 </body>
 </html>
+
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif

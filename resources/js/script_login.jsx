@@ -201,7 +201,7 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
 
             } else {
                 document.getElementById('lottie-animation').style.display = 'none';
-                window.location.href = `/RegisterForm/${data.idregistro}`;
+                window.location.href = `/RegisterForm`;
                  // texto de alerta con el mensaje
                 alertText.textContent = 'Registro exitoso';
                 // div de alerta con la clase 'success'

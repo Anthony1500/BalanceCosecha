@@ -30,11 +30,14 @@ Route::get('/loadscreen', function () {
 
 //Route::get('/iniciar_sesion', [App\Http\Controllers\LoginController::class,'showLogin']);
 
-Auth::routes(['login' => false]);
 
+Auth::routes(['login' => false]);
 Route::post('/login', [App\Http\Controllers\Auth\LoginController::class,'login'])->name('auth.login');
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class,'register'])->name('auth.register');
-Route::get('/RegisterForm/{id}', [App\Http\Controllers\RegisterController::class,'registerform'])->name('RegisterForm');
+Route::post('/Completeregister', [App\Http\Controllers\Auth\RegisterController::class,'registerall'])->name('auth.completeregister');
+Route::get('/RegisterForm', [App\Http\Controllers\RegisterController::class,'registerform'])->name('RegisterForm');
+
+
 
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
