@@ -1,4 +1,7 @@
 
+body{
+    background-color: rgba(0, 0, 0, 0.696);
+}
 button{
     position: absolute;
     padding: 15px 45px;
@@ -339,7 +342,7 @@ button:focus{
 #footer{
   font-family: 'Roboto', sans-serif;
   font-size: 1.2em;
-  color: white;
+  color: rgba(14, 6, 6, 0.374);
   position: fixed;
   -webkit-transform: translate(95vw,90vh);
   -moz-transform: translate(95vw,90vh);

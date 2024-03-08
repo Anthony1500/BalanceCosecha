@@ -7,6 +7,9 @@ a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, bo
   font: inherit;
   vertical-align: initial;
 }
+p {
+text-align: justify;
+}
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -20,6 +23,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 body {
+  height: auto;
   line-height: 1;
 }
 
@@ -97,7 +101,19 @@ table {
   #countrySelect {
     margin-right: 4px;
   }
+  #countrySelectother option {
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: 5px center;
+    padding-left: 30px;
+  }
 
+  #countrySelectother {
+    width: 200px;
+  }
+  #countrySelectother {
+    margin-right: 4px;
+  }
 .nice-form-group > label {
   font-weight: var(--nf-label-font-weight);
   display: block;
@@ -702,6 +718,7 @@ footer {
 }
 
 section {
+ 
   background: #fff;
   padding: 2em;
   border-radius: 0.75rem;
@@ -774,7 +791,7 @@ section ul {
 
 details {
   background: #f1f1f1;
-  margin: 2em -2em -2em;
+  margin: 1em -2em 1em;
   padding: 1.5em 2em;
 }
 
@@ -822,19 +839,31 @@ details summary::-webkit-details-marker {
   display: none;
 }
 button {
-    background-color: #4CAF50; /* Color de fondo */
-    color: white; /* Color del texto */
-    padding: 15px 32px; /* Espaciado interno */
-    text-align: center; /* Alineación del texto */
-    text-decoration: none; /* Sin subrayado */
-    display: inline-block;
-    font-size: 16px; /* Tamaño del texto */
-    margin: 4px 2px;
-    cursor: pointer; /* Cambia el cursor al pasar el ratón */
-    border-radius: 12px; /* Bordes redondeados */
-    border: none; /* Sin borde */
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  display: flex;
+  text-decoration: none; 
+  display: inline-block;
+  font-size: 16px; 
+  margin: 4px 2px;
+  cursor: pointer; 
+  border-radius: 12px;
+  border: none; 
 }
 
 button:hover {
-    background-color: #45a049; /* Cambia el color de fondo al pasar el ratón */
+  background-color: #45a049; 
 }
+#myForm {
+  /* ... tus otros estilos ... */
+
+  /* Agrega una transición a la propiedad 'opacity', 'visibility', y 'height' */
+  transition: opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease;
+  visibility: hidden; /* Oculta el formulario por defecto */
+  opacity: 0;
+  height: 0; /* El formulario no ocupa espacio por defecto */
+  overflow: hidden; /* Asegúrate de que el contenido del formulario no se desborde */
+}
+

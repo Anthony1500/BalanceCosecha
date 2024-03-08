@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   @vite('resources/css/index.css')
+  @vite('resources/js/inicio.js')
   @vite('resources/sass/inicio.scss', 'module')
 
 <head>

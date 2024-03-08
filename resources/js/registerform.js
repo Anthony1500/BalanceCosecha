@@ -25,20 +25,30 @@ function getNewToken() {
     })
     .then(response => response.json())
     .then(data => {
-        localStorage.setItem('authToken', data.auth_token);
-        localStorage.setItem('tokenObtainedAt', Date.now());
+        localStorage.removeItem('authToken');  // Borra el token antiguo
+        localStorage.removeItem('tokenExpiresAt');  // Borra la fecha de caducidad del token antiguo
+        localStorage.setItem('authToken', data.auth_token);  // Almacena el nuevo token
+        localStorage.setItem('tokenExpiresAt', data.exp);  // Almacena la fecha de caducidad del nuevo token
     })
     .catch(error => console.error('Error:', error));
 }
 
 var authToken = localStorage.getItem('authToken');
-var tokenObtainedAt = localStorage.getItem('tokenObtainedAt');
-var tokenExpiresAt = tokenObtainedAt + 23 * 60 * 60 * 1000;
+var tokenExpiresAt = localStorage.getItem('tokenExpiresAt');
+
+var tokenPromise;
 if (Date.now() > tokenExpiresAt) {
-    getNewToken().then(() => {
-        authToken = localStorage.getItem('authToken');
-    });
+    tokenPromise = getNewToken();
+} else {
+    tokenPromise = Promise.resolve();
 }
+
+tokenPromise.then(() => {
+    authToken = localStorage.getItem('authToken');
+    // Aquí puedes continuar con tu solicitud
+});
+
+
 fetch('https://www.universal-tutorial.com/api/countries/', {
     headers: {
       'Authorization': `Bearer ${authToken}`,
@@ -54,21 +64,32 @@ fetch('https://www.universal-tutorial.com/api/countries/', {
   .then(data => {
   const select = document.getElementById('countrySelect');
   const flagImage = document.getElementById('flagImage');
+  const selectother = document.getElementById('countrySelectother');
+  const flagImageother = document.getElementById('flagImageother');
   data.forEach((country, index) => {
     if (supportedCountryCodes.includes(country.country_short_name)) {
-      const option = document.createElement('option');
-      option.value = country.country_name;
-      option.textContent = country.country_name;
+        const option1 = document.createElement('option');
+        option1.value = country.country_name;
+        option1.textContent = country.country_name;
 
-      // Guarda la URL de la imagen de la bandera en un atributo personalizado
-      const flagUrl = `https://flagsapi.com/${country.country_short_name}/shiny/48.png`;
-      option.setAttribute('data-flag', flagUrl);
+        const option2 = document.createElement('option');
+        option2.value = country.country_name;
+        option2.textContent = country.country_name;
 
-      select.appendChild(option);
+        // Guarda la URL de la imagen de la bandera en un atributo personalizado
+        const flagUrl = `https://flagsapi.com/${country.country_short_name}/shiny/48.png`;
+        const flagUrl2 = `https://flagsapi.com/${country.country_short_name}/shiny/48.png`;
+        option1.setAttribute('data-flag', flagUrl);
+        option2.setAttribute('data-flag', flagUrl2);
+
+        select.appendChild(option1);
+        selectother.appendChild(option2);
     }
-  });
+});
 
-  select.addEventListener('change', function() {
+
+select.addEventListener('change', function() {
+    localStorage.setItem('selectedCountry', this.value);
     const selectedOption = this.options[this.selectedIndex];
     if (selectedOption.value !== "") {
         const flagUrl = selectedOption.getAttribute('data-flag');
@@ -81,14 +102,63 @@ fetch('https://www.universal-tutorial.com/api/countries/', {
     }
 });
 
+selectother.addEventListener('change', function() {
+    localStorage.setItem('selectedCountryother', this.value);
+    const selectedOption = this.options[this.selectedIndex];
+    if (selectedOption.value !== "") {
+        const flagUrl = selectedOption.getAttribute('data-flag');
+        if (flagUrl) {
+            flagImageother.src = flagUrl;
+            flagImageother.style.display = 'block';
+        } else {
+            flagImageother.style.display = 'none';
+        }
+    }
 });
+
+
+var selectedCountry = localStorage.getItem('selectedCountry');
+var selectedCountryother = localStorage.getItem('selectedCountryother');
+
+if (selectedCountry) {
+    select.value = selectedCountry;
+    const selectedOption = select.options[select.selectedIndex];
+    const flagUrl = selectedOption.getAttribute('data-flag');
+    if (flagUrl) {
+        flagImage.src = flagUrl;
+        flagImage.style.display = 'block';
+    } else {
+        flagImage.style.display = 'none';
+    }
+}
+
+if (selectedCountryother) {
+    selectother.value = selectedCountryother;
+    const selectedOptionother = selectother.options[selectother.selectedIndex];
+    const flagUrlother = selectedOptionother.getAttribute('data-flag');
+    if (flagUrlother) {
+        flagImageother.src = flagUrlother;
+        flagImageother.style.display = 'block';
+    } else {
+        flagImageother.style.display = 'none';
+    }
+}
+
+});
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 document.getElementById('btnedit').addEventListener('click', function() {
     $('form input, form select').prop('disabled', false);
     document.getElementById('btnedit').style.display = 'none';
     document.getElementById('btnsave').style.display = 'block';
+    localStorage.setItem('editButtonState', 'none');
 });
-
+document.getElementById('btneditproyecto').addEventListener('click', function() {
+    $('form input, form select').prop('disabled', false);
+    document.getElementById('btneditproyecto').style.display = 'none';
+    document.getElementById('btnsaveproyecto').style.display = 'block';
+    localStorage.setItem('editButtonStateproyecto', 'none');
+});
 $('form').on('submit', function(event) {
     event.preventDefault();
 
@@ -102,13 +172,18 @@ if (!allFieldsFilled) {
     return;
 }
 document.getElementById('lottie-animation').style.display = 'block';
-
+var registerUrls;
+    if (this.id === 'formregister') {
+        registerUrls = registerUrl;
+    } else if (this.id === 'myForm') {
+        registerUrls = registerprojectUrl;
+    }
     var data = {};
     $(this).serializeArray().map(function(item) {
         data[item.name] = item.value;
     });
     $.ajax({
-        url: registerUrl,
+        url: registerUrls,
         type: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -120,7 +195,11 @@ document.getElementById('lottie-animation').style.display = 'block';
             document.getElementById('lottie-animation').style.display = 'none';
             $('form input, form select').prop('disabled', true);
             document.getElementById('btnedit').style.display = 'block';
+            document.getElementById('btneditproyecto').style.display = 'block';
             document.getElementById('btnsave').style.display = 'none';
+            document.getElementById('btnsaveproyecto').style.display = 'none';
+            localStorage.setItem('editButtonState', 'block');
+            localStorage.setItem('editButtonStateproyecto', 'block');
 
             var modal = document.getElementById("myalertdialogerror");
             var alertText = modal.querySelector(".alertText");
@@ -168,3 +247,88 @@ document.getElementById('lottie-animation').style.display = 'block';
     });
 });
 
+window.addEventListener('load', function() {
+    var editButtonState = localStorage.getItem('editButtonState');
+    if (editButtonState) {
+        document.getElementById('btnedit').style.display = editButtonState;
+        document.getElementById('btnsave').style.display = editButtonState === 'block' ? 'none' : 'block';
+    }
+    var editButtonState = localStorage.getItem('editButtonStateproyecto');
+    if (editButtonState) {
+        document.getElementById('btneditproyecto').style.display = editButtonState;
+        document.getElementById('btnsaveproyecto').style.display = editButtonState === 'block' ? 'none' : 'block';
+    }
+});
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+document.querySelector('input[type="search"]').addEventListener('change', function() {
+    var ruc = this.value;
+
+
+    if (!ruc) {
+        return;
+    }
+
+    fetch(searchUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ruc: ruc}),
+    })
+    .then(function(response) {
+        if (!response.ok) {
+            throw new Error('No se encontró el proyecto con el RUC proporcionado.');
+        }
+        return response.json();
+    })
+    .then(function(proyecto) {
+        // Aquí puedes actualizar tu lista con los datos del proyecto
+        // Por ejemplo, podrías mostrar un mensaje de éxito
+        alert('Proyecto encontrado: ' + proyecto.nombre);
+    })
+    .catch(function(error) {
+        // Aquí puedes mostrar el mensaje de error
+        // Por ejemplo, podrías mostrar un mensaje de error
+        alert('Error: ' + error.message);
+    });
+});
+
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+window.addEventListener('popstate', function() {
+    // Elimina los elementos del almacenamiento local
+    localStorage.removeItem('selectedCountry');
+    localStorage.removeItem('editButtonState');
+
+    // Restablece el estado del botón de edición
+    document.getElementById('btnedit').style.display = 'block';
+    document.getElementById('btnsave').style.display = 'none';
+
+    // Restablece el estado del cuadro combinado
+    document.getElementById('countrySelect').selectedIndex = 0;
+});
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+document.getElementById('btnnew').addEventListener('click', function() {
+    var form = document.getElementById('myForm');
+    if (form.style.opacity === '0' || form.style.opacity === '') {
+        form.style.visibility = 'visible'; // Asegúrate de que el formulario se muestre
+        form.style.opacity = '1';
+        form.style.height = 'auto'; // Permite que el formulario ocupe espacio
+        document.getElementById('barsearch').style.display = 'none'
+        document.getElementById('saveformproduct').style.display = 'none'
+        document.getElementById('optionletter').style.display = 'none'
+    } else {
+        form.style.opacity = '0';
+        form.style.height = '0'; // El formulario no ocupa espacio
+        document.getElementById('barsearch').style.display = 'block'
+        document.getElementById('saveformproduct').style.display = 'block'
+        document.getElementById('optionletter').style.display = 'block'
+        // Después de que la transición haya terminado, oculta el formulario
+        setTimeout(function() {
+            form.style.visibility = 'hidden';
+        }, 500); // 500ms es la duración de la transición
+    }
+});
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

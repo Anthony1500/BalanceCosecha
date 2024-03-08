@@ -26,6 +26,7 @@ class Registro extends Authenticatable
         'direccion_domicilio',
         'telefono',
         'cargo',
+        'usario_imagen',
         'id_proyecto',
     ];
 

@@ -16,7 +16,7 @@ class CreateProyectoTable extends Migration
         Schema::create('proyectos', function (Blueprint $table) {
             $table->id('id_proyecto'); // Clave primaria
             $table->string('nombre_proyecto', 100)->unique()->nullable(); // Único
-            $table->string('ruc', 20)->unique()->nullable(); // Único
+            $table->string('ruc', 13)->unique()->nullable(); // Único
             $table->string('socios', 100)->nullable(); // Nulo
             $table->string('pais', 50)->nullable(); // Nulo
             $table->string('provincia', 50)->nullable(); // Nulo

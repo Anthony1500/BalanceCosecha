@@ -27,6 +27,7 @@ class CreateRegistroTable extends Migration
             $table->string('usuario', 100)->unique()->nullable(); // Único
             $table->string('password', 100)->nullable();;
             $table->string('cargo', 50)->nullable(); // Nulo
+            $table->binary('usario_imagen')->nullable();
             $table->unsignedBigInteger('id_proyecto')->nullable(); // Clave foránea
             $table->timestamps();
             // Definición de la clave foránea

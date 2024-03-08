@@ -12,6 +12,8 @@ class Proyecto extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $primaryKey = 'id_proyecto';
+    
     protected $fillable = [
         'nombre_proyecto',
         'ruc',

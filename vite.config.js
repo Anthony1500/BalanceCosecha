@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/js/script_mountains.js',
                 'resources/js/alertdialog.js',
                 'resources/js/registerform.js',
+                'resources/js/inicio.js',
             ],
             refresh: true,
         }),
