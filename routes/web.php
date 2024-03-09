@@ -38,6 +38,9 @@ Route::get('/images/{filename}', function ($filename) {
 
     return $response;
 });
+Route::get('/modal', function () {
+    return view('modal.modal');
+});
 
 Route::get('/LoginForm', [App\Http\Controllers\LoginController::class,'showLogin'])->name('LoginForm')->middleware('guest');
 
@@ -57,6 +60,7 @@ Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class,'r
 Route::post('/Completeregister', [App\Http\Controllers\Auth\RegisterController::class,'registerall'])->name('auth.completeregister');
 Route::post('/Buscarproyecto', [App\Http\Controllers\ProyectoController::class,'buscar'])->name('Buscarproyecto');
 Route::post('/Crearproyecto', [App\Http\Controllers\ProyectoController::class,'store'])->name('Crearproyecto');
+Route::post('/getToken', [App\Http\Controllers\TokenController::class,'getNewToken'])->name('getToken');
 Route::get('/RegisterForm', [App\Http\Controllers\RegisterController::class,'registerform'])->name('RegisterForm');
 
 

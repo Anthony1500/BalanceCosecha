@@ -14,6 +14,8 @@
    @vite('resources/js/registerform.js')
    @vite('resources/js/alertdialog.js')
    @include('loading')
+
+
 </head>
 <body>
 
@@ -378,6 +380,7 @@
             <input type="checkbox" id="check-2" />
             <label for="check-2">
                 Acepto los <a href="#" id="terms-link">términos y condiciones</a>
+                <iframe id="miFrame" src="" ></iframe>
                 <small>Debes aceptar los términos y condiciones para continuar</small>
             </label>
         </div>
@@ -409,6 +412,7 @@
     var supportedCountryCodes = "{{ env('SUPPORTED_COUNTRY_CODES') }}".split(',');
     var Email = "{{ env('EMAIL') }}";
     var api_Token = "{{ env('API_TOKEN') }}";
+    var getToken = "{{ route('getToken') }}";
 
 
     </script>

@@ -13,6 +13,7 @@ navLinks.forEach(link => {
 });
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+var authToken;
 function getNewToken() {
     var email = Email;
     var apiToken = api_Token;
@@ -25,35 +26,61 @@ function getNewToken() {
     })
     .then(response => response.json())
     .then(data => {
-        localStorage.removeItem('authToken');  // Borra el token antiguo
-        localStorage.removeItem('tokenExpiresAt');  // Borra la fecha de caducidad del token antiguo
-        localStorage.setItem('authToken', data.auth_token);  // Almacena el nuevo token
-        localStorage.setItem('tokenExpiresAt', data.exp);  // Almacena la fecha de caducidad del nuevo token
-    })
-    .catch(error => console.error('Error:', error));
+        if (data.auth_token) {
+            localStorage.setItem('authToken', data.auth_token);  // Almacena el nuevo token
+        }
+    });
 }
 
-var authToken = localStorage.getItem('authToken');
-var tokenExpiresAt = localStorage.getItem('tokenExpiresAt');
-
-var tokenPromise;
-if (Date.now() > tokenExpiresAt) {
-    tokenPromise = getNewToken();
-} else {
-    tokenPromise = Promise.resolve();
-}
-
-tokenPromise.then(() => {
+function checkToken() {
     authToken = localStorage.getItem('authToken');
-    // Aquí puedes continuar con tu solicitud
+    if (!authToken) {
+        return getNewToken();
+    } else {
+        return fetch('https://www.universal-tutorial.com/api/countries/', {
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error && data.error.name === 'TokenExpiredError') {
+                return getNewToken();
+            }
+        });
+    }
+}
+
+checkToken().then(() => {
+  authToken = localStorage.getItem('authToken');
+  console.log(authToken);  // Mueve esta línea aquí
+  // Aquí puedes continuar con tu solicitud
 });
 
 
-fetch('https://www.universal-tutorial.com/api/countries/', {
+fetch(getToken, {
+    method: 'POST',
     headers: {
-      'Authorization': `Bearer ${authToken}`,
-      'Accept': 'application/json'
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    const authToken = data.token;
+    return fetch('https://www.universal-tutorial.com/api/countries/', {
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'Accept': 'application/json'
+      }
+    });
   })
   .then(response => {
     if (!response.ok) {
@@ -253,10 +280,10 @@ window.addEventListener('load', function() {
         document.getElementById('btnedit').style.display = editButtonState;
         document.getElementById('btnsave').style.display = editButtonState === 'block' ? 'none' : 'block';
     }
-    var editButtonState = localStorage.getItem('editButtonStateproyecto');
-    if (editButtonState) {
-        document.getElementById('btneditproyecto').style.display = editButtonState;
-        document.getElementById('btnsaveproyecto').style.display = editButtonState === 'block' ? 'none' : 'block';
+    var editButtonStateproyecto = localStorage.getItem('editButtonStateproyecto');
+    if (editButtonStateproyecto) {
+        document.getElementById('btneditproyecto').style.display = editButtonStateproyecto;
+        document.getElementById('btnsaveproyecto').style.display = editButtonStateproyecto === 'block' ? 'none' : 'block';
     }
 });
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -298,16 +325,22 @@ document.querySelector('input[type="search"]').addEventListener('change', functi
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 window.addEventListener('popstate', function() {
+    localStorage.removeItem('authToken');
     // Elimina los elementos del almacenamiento local
     localStorage.removeItem('selectedCountry');
+    localStorage.removeItem('selectedCountryother');
     localStorage.removeItem('editButtonState');
+    localStorage.removeItem('editButtonStateproyecto');
 
     // Restablece el estado del botón de edición
     document.getElementById('btnedit').style.display = 'block';
     document.getElementById('btnsave').style.display = 'none';
+    document.getElementById('btneditproyecto').style.display = 'block';
+    document.getElementById('btnsaveproyecto').style.display = 'none';
 
     // Restablece el estado del cuadro combinado
     document.getElementById('countrySelect').selectedIndex = 0;
+    document.getElementById('countrySelectother').selectedIndex = 0;
 });
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 document.getElementById('btnnew').addEventListener('click', function() {
@@ -332,3 +365,38 @@ document.getElementById('btnnew').addEventListener('click', function() {
     }
 });
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+var modal = document.getElementById("miFrame");
+
+$(document).ready(function() {
+    $('#terms-link').on('click', function(event) {
+        event.preventDefault();
+        $('#miFrame').attr('src', '/modal');
+        $('#miFrame').css('visibility', 'visible'); // Muestra el iframe suavemente
+    });
+});
+
+
+var span = document.getElementsByClassName("cerrar")[0];
+
+modal.onload = function() {
+  // Accede a un elemento en la página del iframe
+  var btn = modal.contentWindow.document.getElementById("modalclose");
+  var btnacept = modal.contentWindow.document.getElementById("botonacept");
+
+  if (btn) {
+    // Cuando el usuario haga clic en  (x), cierra el modal
+    btn.onclick = function() {
+      document.getElementById("miFrame").src = "";
+      document.getElementById("miFrame").style.visibility = "hidden"; // Oculta el iframe
+      document.body.style.overflow = "auto";
+    }
+  }
+  if (btnacept) {
+    // Cuando el usuario haga clic en  (x), cierra el modal
+    btnacept.onclick = function() {
+      document.getElementById("miFrame").src = "";
+      document.getElementById("miFrame").style.visibility = "hidden"; // Oculta el iframe
+      document.body.style.overflow = "auto";
+    }
+  }
+};
