@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Proyecto;
 use App\Models\Registro;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -80,41 +81,96 @@ class RegisterController extends Controller
 }
 public function registerall(Request $request) {
 
-    try {
+
         $validatedData = $request->validate([
             'nombre' => 'required|max:255',
             'apellido' => 'required|max:255',
-            'usuario' => 'required|max:255|unique:registros',
-            'email' => 'required|email|max:255|unique:registros',
+            'usuario' => 'required|max:255',
+            'email' => 'required|email|max:255',
             'pais' => 'required|max:255',
             'provincia' => 'required|max:255',
             'ciudad' => 'required|max:255',
             'direccion_domicilio' => 'required|max:255',
             'telefono' => 'required|max:255',
             'cargo' => 'required|max:255',
+        ], [
+            'required' => 'El campo :attribute es obligatorio.',
+            'max' => 'El campo :attribute no debe tener más de :max caracteres.',
         ]);
+
+
 
         $identificacion = $request->session()->get('identificacion');
         $registro = Registro::where('identificacion', $identificacion)->first();
-
+        $user = User::where('usuario', $validatedData['usuario'])
+        ->orWhere('email', $validatedData['email'])
+        ->first();
         if (!$registro) {
             return response()->json(['error' => 'Registro no encontrado.'], 404);
         }
-        DB::beginTransaction();
-        $registro->update($validatedData);
-        DB::commit();
-        return response()->json(['success' => 'Registro actualizado con éxito.'], 200);
-    } catch (\Illuminate\Database\QueryException $e) {
-        DB::rollBack();
-        $errorMessage = $e->getMessage();
-        return response()->json(['error' => 'Error en la base de datos al completar el registro: ' . $errorMessage], 400);
-    } catch (\Exception $e) {
-        DB::rollBack();
-        $errorMessage = $e->getMessage();
-        return response()->json(['error' =>  'Datos ingresados ya existentes en la base'], 409);
-    }
+        // Compara los datos enviados con los datos existentes
+        $changes = array_diff($validatedData, $registro->toArray());
+        if (!empty($changes)) {
+            // Si hay cambios, realiza la actualización
+            DB::beginTransaction();
+            try {
+                // Construye un nuevo array que sólo contenga los campos que han cambiado
+                $dataToUpdate = array_intersect_key($validatedData, $changes);
+
+                $registro->update($dataToUpdate);
+
+                if ($user && $user->id_registro != $registro->id_registro) {
+                    // Si el usuario ya existe y no es el mismo que se está actualizando, devuelve un error
+                    return response()->json(['error' => 'El nombre de usuario o correo electrónico ya está en uso.'], 409);
+                } else {
+                    if (!$user) {
+                        // Si el usuario no existe, crea una nueva instancia de User
+                        $user = new User;
+                    }
+                    // Realiza la actualización
+                    $user->usuario = $validatedData['usuario'];
+                    $user->email = $validatedData['email'];
+                    $user->password = $registro->password;
+                    $user->id_registro = $registro->id_registro; // Añade el id del registro a la tabla de usuarios
+                    $user->save();
+                    DB::commit();
+                    return response()->json(['success' => 'Registro realizado con éxito.'], 200);
+                }
+            } catch (\Illuminate\Database\QueryException $e) {
+                DB::rollBack();
+                $errorCode = $e->errorInfo[1];
+                if($errorCode == 1062){
+                    // Obtén el mensaje de error
+                    $errorString = $e->errorInfo[2];
+                    if (strpos($errorString, 'usuario')) {
+                        return response()->json(['error' => 'El nombre de usuario ya está en uso.'], 409);
+                    } else if (strpos($errorString, 'email')) {
+                        return response()->json(['error' => 'El correo electrónico ya está en uso.'], 409);
+                    }
+                }
+                // $errorMessage = $e->getMessage();
+                return response()->json(['error' => 'Error en la base de datos al completar el registro.'], 400);
+            } catch (\Exception $e) {
+                DB::rollBack();
+               // $errorMessage = $e->getMessage();
+                return response()->json(['error' =>  'Datos ingresados ya existentes en la base'], 409);
+            }
+        } else {
+            // Si no hay cambios, no realiza la actualización
+            return response()->json(['success' ], 204);
+        }
+
 }
 
+public function logout(Request $request) {
+    Auth::guard('registro')->logout();
+
+    $request->session()->invalidate();
+
+    $request->session()->regenerateToken();
+
+    return response()->json(['message' => 'Sesión cerrada con éxito.'], 200);
+}
 
 
 

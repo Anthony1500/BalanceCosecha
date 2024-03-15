@@ -10,6 +10,7 @@
    @vite('resources/css/registerform.css')
    @vite('resources/css/style_sky.css')
    @vite('resources/css/alertdialog.css')
+   @vite('resources/css/searchelement.css')
    @vite('resources/js/script.js')
    @vite('resources/js/registerform.js')
    @vite('resources/js/alertdialog.js')
@@ -23,15 +24,16 @@
   <div class="demo-page-navigation">
     <nav>
       <ul>
-        <li>
+        <li id="introsection">
             <a href="#intro">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 50 50">
                     <path d="M 25 1 C 11.222656 1 0 10.878906 0 23.1875 C 0 29.234375 2.773438 34.664063 7.21875 38.6875 C 6.546875 40.761719 5.046875 42.398438 3.53125 43.65625 C 2.714844 44.332031 1.933594 44.910156 1.3125 45.46875 C 1.003906 45.746094 0.722656 46.027344 0.5 46.375 C 0.277344 46.722656 0.078125 47.21875 0.21875 47.75 L 0.34375 48.15625 L 0.6875 48.375 C 1.976563 49.117188 3.582031 49.246094 5.3125 49.125 C 7.042969 49.003906 8.929688 48.605469 10.78125 48.09375 C 14.375 47.101563 17.75 45.6875 19.53125 44.90625 C 21.289063 45.273438 23.054688 45.5 24.90625 45.5 C 38.683594 45.5 49.90625 35.621094 49.90625 23.3125 C 49.90625 11.007813 38.78125 1 25 1 Z M 25 3 C 37.820313 3 47.90625 12.214844 47.90625 23.3125 C 47.90625 34.402344 37.730469 43.5 24.90625 43.5 C 23.078125 43.5 21.355469 43.320313 19.625 42.9375 L 19.28125 42.84375 L 19 43 C 17.328125 43.738281 13.792969 45.179688 10.25 46.15625 C 8.476563 46.644531 6.710938 47.019531 5.1875 47.125 C 4.167969 47.195313 3.539063 46.953125 2.84375 46.78125 C 3.339844 46.355469 4.019531 45.847656 4.8125 45.1875 C 6.554688 43.742188 8.644531 41.730469 9.375 38.75 L 9.53125 38.125 L 9.03125 37.75 C 4.625 34.015625 2 28.875 2 23.1875 C 2 12.097656 12.175781 3 25 3 Z M 23.8125 12.8125 C 23.511719 12.8125 23.40625 12.988281 23.40625 13.1875 L 23.40625 15.8125 C 23.40625 16.113281 23.613281 16.1875 23.8125 16.1875 L 26.1875 16.1875 C 26.488281 16.1875 26.59375 16.011719 26.59375 15.8125 L 26.59375 13.1875 C 26.59375 12.886719 26.386719 12.8125 26.1875 12.8125 Z M 23.90625 20.09375 C 23.605469 20.09375 23.5 20.300781 23.5 20.5 L 23.5 33.90625 C 23.5 34.207031 23.707031 34.3125 23.90625 34.3125 L 23.90625 34.40625 L 26.1875 34.40625 C 26.488281 34.40625 26.59375 34.199219 26.59375 34 L 26.59375 20.5 C 26.59375 20.199219 26.386719 20.09375 26.1875 20.09375 Z"></path>
                 </svg>
                 Acerca de
+                <span class="checkmark"></span>
             </a>
         </li>
-        <li>
+        <li id="registersection">
           <a href="#register">
             <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="24" width="24" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
                 <g transform="translate(0 -1028.4)">
@@ -42,9 +44,11 @@
                  <path d="m7 1035.5c-0.6655 0-1.2798 0.4-1.7324 0.8-0.3868 0.5-0.6104 1-0.7546 1.6-0.4216 0.4-0.3708 1-0.0589 1.4 0.3297 0.4 0.3253 0.9 0.5757 1.4 0.1042 0.4 0.6974 0.7 0.6972 1.1 0.1491 0.7-0.7098 0.5-1.0969 0.7-0.5399 0.2-1.2466 0.4-1.6286 0.8 0.04 0.6-0.1095 1.2 0.125 1.7 0.2 0.4 0.7004 0.4 1.1035 0.4h6.208c0.459-0.2 0.621-0.8 0.562-1.2v-1c-0.705-0.3-1.3602-0.7-2.1396-0.9-0.4624 0-0.6621-0.3-0.6986-0.7 0.6429-0.5 0.9832-1.3 1.2132-2.1 0.3596-0.3 0.655-1.1 0.1842-1.5-0.2308-0.4-0.2642-0.9-0.5832-1.4-0.4221-0.6-1.1761-1.1-1.976-1.1z" fill="#34495e"/>
                 </g>
                </svg>
-            Completar Registro</a>
+            Completar Registro
+            <span class="checkmark"></span>
+        </a>
         </li>
-        <li>
+        <li id="projectssection" >
           <a href="#projects">
             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="548.169px" height="548.169px" viewBox="0 0 548.169 548.169" style="enable-background:new 0 0 548.169 548.169;"
@@ -113,11 +117,13 @@
        <g>
        </g>
        </svg>
-       Tus Proyectos</a>
+       Tus Proyectos
+       <span class="checkmark"></span>
+    </a>
         </li>
 
-        <li>
-          <a href="#save">
+        <li id="saveall" >
+          <a href="#saveformproduct">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             	 viewBox="0 0 100.25 100.25" style="enable-background:new 0 0 100.25 100.25;" xml:space="preserve">
             <path d="M83.061,27.94l-11-11c-0.281-0.281-0.663-0.439-1.061-0.439H18c-0.828,0-1.5,0.671-1.5,1.5v64c0,0.829,0.672,1.5,1.5,1.5h64
@@ -125,13 +131,15 @@
             	 M80.5,80.5h-6V53c0-0.829-0.672-1.5-1.5-1.5H27c-0.828,0-1.5,0.671-1.5,1.5v27.5h-6v-61h12V42c0,0.829,0.672,1.5,1.5,1.5h34
             	c0.828,0,1.5-0.671,1.5-1.5V19.5h1.879L80.5,29.621V80.5z"/>
             </svg>
-            Guardar y Terminar</a>
+            Guardar y Terminar
+            <span class="checkmark"></span>
+        </a>
         </li>
       </ul>
     </nav>
   </div>
   <main class="demo-page-content">
-    <section>
+    <section id="sectionintro">
         <div class="href-target" id="intro"></div>
         <h1 class="package-name">Registro</h1>
         <p>
@@ -266,7 +274,7 @@
       <p >
         Si ya tienes un proyecto en nuestra plataforma, puedes buscarlo utilizando la barra de búsqueda. Para ello, deberás ingresar el RUC del proyecto. Si tu búsqueda arroja un proyecto existente, podrás asociarte a dicho proyecto haciendo clic en el botón ‘Ser parte del proyecto’. En cambio, si no perteneces a un proyecto existente o deseas crear uno nuevo, haz clic en el botón ‘Crear nuevo proyecto’, donde se desplegará el formulario para agregar un nuevo proyecto.
     </p>
-    <details>
+    <details id="btndetails">
         <summary>
     <button id="btnnew" type="submit" class="toggle-code">
   <svg fill="#000000" height="22px" width="22px" version="1.1" id="XMLID_292_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -277,7 +285,7 @@
 	</g>
 </g>
 </svg>
-   Crear nuevo proyecto
+<span id="btnText"></span>
     </button>
 </details>
         </summary>
@@ -336,7 +344,7 @@
          <input type="text" name="coordenadas" placeholder="Ingrese las coordenadas" value="" class="icon-right" required />
        </div>
 
-       <details>
+       <details >
         <summary>
        <button id="btnsaveproyecto" type="submit" class="toggle-code">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23" width="22" height="21"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h14l2.707 2.707a1 1 0 0 1 .293.707V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm3 1v5h9V4H7zm-1 8v7h12v-7H6zm7-7h2v3h-2V5z" fill="#000"/></svg>
@@ -354,13 +362,57 @@
 </details>
 
  </form>
-
+ <p id="optionletter">
+    o
+     </p>
       <div class="nice-form-group" id="barsearch">
-       <p id="optionletter">
-       o
-        </p>
+
       <label>Buscar : </label>
       <input type="search" placeholder="Por favor, introduzca el número de RUC" value="" />
+
+
+      <ol id="resultado" style="--length: 5" role="list">
+        <li id="item1" style="--i: 1">
+            <h3 id="title1">Proyecto no encontrado</h3>
+            <p id="desc1">Lo sentimos, no pudimos encontrar el proyecto que estás buscando.</p>
+
+        </li>
+        <li id="item2" style="--i: 5">
+            <strong><h3 id="title2"></h3></strong>
+            <p id="desc2">
+
+            </p>
+            <details>
+                <summary>
+                    <div style="display: flex; justify-content: center;">
+            <button id="btnaddproyect"  type="button" class=" btn-style">
+                <svg width="22" height="22" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <title>project-new</title>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="Combined-Shape" fill="#000000" transform="translate(64.000000, 34.346667)">
+                            <path d="M192,-7.10542736e-15 L384,110.851252 L384,242.986 L341.333,242.986 L341.333,157.655 L213.333,231.555 L213.333,431.088 L192,443.405007 L0,332.553755 L0,110.851252 L192,-7.10542736e-15 Z M341.333333,264.32 L341.333,328.32 L405.333333,328.32 L405.333333,370.986667 L341.333,370.986 L341.333333,434.986667 L298.666667,434.986667 L298.666,370.986 L234.666667,370.986667 L234.666667,328.32 L298.666,328.32 L298.666667,264.32 L341.333333,264.32 Z M42.666,157.654 L42.6666667,307.920144 L170.666,381.82 L170.666,231.555 L42.666,157.654 Z M192,49.267223 L66.1333333,121.936377 L192,194.605531 L317.866667,121.936377 L192,49.267223 Z">
+
+                </path>
+                        </g>
+                    </g>
+                </svg>
+                <span id="proyecttext">Ser parte del proyecto</span>
+
+            </button>
+        </div>
+         </summary>
+
+        </details>
+        </li>
+
+
+
+    </ol>
+
+
+
+
+
       </div>
 
  </section>
@@ -372,7 +424,7 @@
         Guardar
       </h1>
       <p>
-        Una vez que completado todas las secciones, puedes guardar tu información  y terminar haciendo clic en el botón "Guardar y Terminar" a continuación:
+        Una vez  completado todas las secciones, puedes guardar tu información  y terminar haciendo clic en el botón "Guardar y Terminar" a continuación:
       </p>
 
       <fieldset class="nice-form-group">
@@ -387,9 +439,14 @@
     </fieldset>
 
 
+
       <details>
         <summary>
-       <button id="btnsaveproyecto" type="submit" class="toggle-code">
+            <p class="texto-informativo">
+                <span style="color:red; font-size:18px;">*</span>El botón ‘Guardar y Terminar’ se activará una vez que completes todas las secciones y aceptes los términos y condiciones. Gracias por tu comprensión.
+            </p>
+
+       <button id="btnsaveall" type="submit" class="toggle-code">
         <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"width="22" height="21"><defs><style>.cls-1{fill:#2d4a60;}.cls-2{fill:#263f52;}.cls-3{fill:#8fa5a5;}.cls-4{fill:#7b8c8c;}.cls-5{fill:#eaeff0;}.cls-6{fill:#bac2c6;}</style></defs><title>Diskette</title><path class="cls-1" d="M453.714,129.294,382.7,58.289a52.97,52.97,0,0,0-37.708-15.622H74.667a32.035,32.035,0,0,0-32,32V437.333a32.035,32.035,0,0,0,32,32H437.333a32.035,32.035,0,0,0,32-32V167.005A52.992,52.992,0,0,0,453.714,129.294Z"/><path class="cls-2" d="M42.667,437.333a32.035,32.035,0,0,0,32,32H437.333a31.9,31.9,0,0,0,22.617-9.383l-407.9-407.9a31.9,31.9,0,0,0-9.383,22.617Z"/><path class="cls-3" d="M128,469.333V330.667A10.667,10.667,0,0,1,138.667,320H373.333A10.667,10.667,0,0,1,384,330.667V469.333Z"/><path class="cls-4" d="M384,384l-64-64H138.667A10.667,10.667,0,0,0,128,330.667V469.333H384Z"/><path class="cls-5" d="M341.333,42.667V149.333A10.667,10.667,0,0,1,330.667,160H160a10.667,10.667,0,0,1-10.667-10.667V42.667Z"/><path class="cls-6" d="M160,160l-10.667-10.667A10.667,10.667,0,0,0,160,160Z"/><rect class="cls-3" x="288" y="74.667" width="21.333" height="53.333" rx="5.333" ry="5.333"/></svg>
         Guardar y Terminar
     </button>
@@ -408,7 +465,9 @@
     var loginUrl = "{{ route('auth.login') }}";
     var registerUrl = "{{ route('auth.completeregister') }}";
     var registerprojectUrl = "{{ route('Crearproyecto') }}";
+    var actualizarUrl ="{{ route('addproject') }}";
     var searchUrl = "{{ route('Buscarproyecto') }}";
+    var home = "{{ route('home') }}";
     var supportedCountryCodes = "{{ env('SUPPORTED_COUNTRY_CODES') }}".split(',');
     var Email = "{{ env('EMAIL') }}";
     var api_Token = "{{ env('API_TOKEN') }}";

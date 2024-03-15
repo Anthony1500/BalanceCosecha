@@ -183,8 +183,15 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
 
             if (!response.ok) {
 
-                // texto de alerta con el mensaje de error
-                alertText.textContent = `Error ${response.status}: ${data.error}`;
+                let errorMessage = `Error ${response.status}: `;
+                if (data.errors) {
+                    for (let field in data.errors) {
+                        errorMessage += `${field}: ${data.errors[field].join(', ')}\n`;
+                    }
+                } else {
+                    errorMessage += data.error;
+                }
+                alertText.textContent = errorMessage;
                 // clase 'error' al div de alerta
                 alertDiv.classList.remove('success');
                 alertDiv.classList.add('error');
@@ -201,7 +208,13 @@ function FakeForm({ heading, fields, submitLabel, isRegister, switched, showPass
 
             } else {
                 document.getElementById('lottie-animation').style.display = 'none';
-                window.location.href = `/RegisterForm`;
+                if (url === loginUrl) {
+                    localStorage.clear();
+                    window.location.href = '/homepage';
+                } else if (url === registerUrl) {
+                    localStorage.clear();
+                    window.location.href = '/RegisterForm';
+                }
                  // texto de alerta con el mensaje
                 alertText.textContent = 'Registro exitoso';
                 // div de alerta con la clase 'success'

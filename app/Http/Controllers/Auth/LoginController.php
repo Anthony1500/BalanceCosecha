@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,14 +52,17 @@ class LoginController extends Controller
             'password' => $logpassword,
         ];
         if (Auth::guard('registro')->attempt($credentials)) {
+            $user = Auth::guard('registro')->user();
+            $request->session()->put('id_registro', $user->id_registro);
+            $request->session()->put('id_proyecto', $user->id_proyecto);
             return response()->json(['message' => 'Inicio de sesión exitoso.'], 200);
-            //return redirect()->intended('/');
         } else {
             return response()->json(['error' => 'Las credenciales proporcionadas no son válidas.'], 401);
         }
+    } catch (ThrottleRequestsException $e) {
+        return response()->json(['error' => 'Has superado el número máximo de intentos de inicio de sesión. Por favor, inténtalo de nuevo más tarde.'], 429);
     } catch (\Exception $e) {
         return response()->json(['error' => 'Ha ocurrido un error interno en el servidor.'], 500);
-       // return back()->withErrors(['email' => 'Credenciales inválidas']);
     }
 }
 

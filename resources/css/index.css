@@ -8,9 +8,9 @@ button{
     background: transparent;
     font-size: 17px;
     font-weight: 500;
-    color: #FF8C00; /*  naranja oscuro */
+    color: #FFFFFF; /* blanco */
     cursor: pointer;
-    border: 1px solid #FF8C00; /*  naranja oscuro */
+    border: 1px solid #FFFFFF; /* blanco */
     border-radius: 8px;
     filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
     width: 250px;
@@ -23,8 +23,8 @@ button{
     left: 0px;
     right: 0px;
     margin: auto;
-
 }
+
 
 button:hover{
     transform: translateY(-3px);

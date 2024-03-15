@@ -9,56 +9,61 @@ class TokenController extends Controller
 {
     private $authToken;
 
-    public function __construct()
+  public function __construct()
+  {
+    $this->middleware(function ($request, $next) {
+      $this->authToken = $request->session()->get('authToken', null);
+      return $next($request);
+    });
+  }
+    public function getNewToken($retries = 5)
     {
-        $this->middleware(function ($request, $next) {
-            $this->authToken = session('authToken', null);
-            return $next($request);
-        });
-    }
+        while ($retries > 0) {
+            try {
+                $client = new Client();
+                $response = $client->request('GET', 'https://www.universal-tutorial.com/api/getaccesstoken', [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'api-token' =>  env('API_TOKEN'),
+                        'user-email' => env('EMAIL')
+                    ]
+                ]);
 
-    public function getNewToken()
-    {
-        $client = new Client();
-        $response = $client->request('GET', 'https://www.universal-tutorial.com/api/getaccesstoken', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'api-token' =>  env('API_TOKEN'),
-                'user-email' => env('EMAIL')
-            ]
-        ]);
+                $data = json_decode($response->getBody(), true);
 
-        $data = json_decode($response->getBody(), true);
+                if (isset($data['auth_token'])) {
+                    session(['authToken' => $data['auth_token']]);
+                    $this->authToken = $data['auth_token'];
+                }
 
-        if (isset($data['auth_token'])) {
-            session(['authToken' => $data['auth_token']]);
-            $this->authToken = $data['auth_token'];
+                return response()->json(['token' => $this->authToken]);
+            } catch (\Exception $e) {
+                $retries--;
+                if ($retries == 0) {
+                    return response()->json(['error' => 'Hubo un problema al obtener el token.']);
+                }
+            }
         }
-
-        return response()->json(['token' => $this->authToken]);
     }
 
 
     public function checkToken()
     {
-        if (!$this->authToken) {
+        $client = new Client();
+        $response = $client->request('GET', 'https://www.universal-tutorial.com/api/countries/', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->authToken,
+                'Accept' => 'application/json'
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        if (isset($data['error']) && $data['error']['name'] === 'TokenExpiredError') {
             $this->getNewToken();
+            $this->checkToken();
         } else {
-            $client = new Client();
-            $response = $client->request('GET', 'https://www.universal-tutorial.com/api/countries/', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $this->authToken,
-                    'Accept' => 'application/json'
-                ]
-            ]);
-
-            $data = json_decode($response->getBody(), true);
-
-            if (isset($data['error']) && $data['error']['name'] === 'TokenExpiredError') {
-                $this->getNewToken();
-            }
+            return response()->json($data);
         }
-
-        // Aquí puedes continuar con tu solicitud
     }
 }

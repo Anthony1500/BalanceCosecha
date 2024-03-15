@@ -643,7 +643,7 @@ body {
   position: sticky;
   top: 2em;
   background: #fff;
-  padding: 0.5em;
+  padding: 0.4em;
   border-radius: 0.75rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
@@ -791,7 +791,7 @@ section ul {
 
 details {
   background: #f1f1f1;
-  margin: 1em -2em 1em;
+  margin: 1em -2em -1em;
   padding: 1.5em 2em;
 }
 
@@ -800,20 +800,22 @@ details .gist {
 }
 
 details .toggle-code {
+  background: #10b981;
   display: inline-block;
   padding: 0.5em 1em;
   border-radius: 5px;
   font-size: 0.875rem;
-  background: #10b981;
   top: 1em;
   right: 1em;
   color: #fff;
   font-weight: 500;
   -webkit-user-select: none;
   -moz-user-select: none;
-   -ms-user-select: none;
-       user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 details .toggle-code:hover {
@@ -865,7 +867,7 @@ button:hover {
 }
 
 #miFrame {
-    visibility: hidden; 
+    visibility: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -886,5 +888,69 @@ button:hover {
 #miFrame.oculto {
     opacity: 0;
 }
+.btn-style {
+    background-color: #1177dc;
+    display: inline-block;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    font-size: 0.875rem;
+    top: 1em;
+    right: 1em;
+    color: #fff;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.disabled-button {
+    background-color: #aaa4a4;
+    color: #292929;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    cursor: auto;
+}
+.disabled-button:hover:disabled {
+    background-color: #aaa4a4;
+    color: #292929;
+}
+.checkmark {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+    margin-left: 1rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background-color: rgb(120, 201, 57);
+    color: white;
+}
 
+.checkmark::after {
+    content: '✓';
+}
 
+.completado .checkmark {
+    display: flex;
+}
+#introsection a,
+#projectssection a,
+#registersection a,
+#saveall a {
+
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+#introsection a:hover,
+#projectssection a:hover,
+#registersection a:hover,
+#saveall a:hover {
+    color: #007BFF;
+}
+.texto-informativo {
+    font-size: 0.9em;
+}

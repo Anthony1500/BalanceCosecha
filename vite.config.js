@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/css/alertdialog.css',
                 'resources/css/registerform.css',
                 'resources/css/modal.css',
+                'resources/css/searchelement.css',
                 'resources/sass/inicio.scss',
                 'resources/js/script.js',
                 'resources/js/script_login.jsx',

@@ -42,4 +42,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function registro()
+    {
+        return $this->belongsTo(Registro::class, 'id_registro');
+    }
 }
