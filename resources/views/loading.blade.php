@@ -18,30 +18,30 @@
             align-items: center;
         }
         #lottie-container {
-            width: 40%; /* Tamaño de la animación */
-            height: 40%; /* Tamaño de la animación */
-            position: relative; /* Centra la animación */
-            top: 50%; /* Centra la animación */
-            left: 50%; /* Centra la animación */
-            transform: translate(-50%, -50%); /* Centra la animación */
+            width: 40%;
+            height: 40%;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
 <body>
     <div id="lottie-animation">
-        <div id="lottie-container"></div> <!-- Contenedor para la animación -->
+        <div id="lottie-container"></div>
     </div>
 
     <script>
         var animation = bodymovin.loadAnimation({
-            container: document.getElementById('lottie-container'), // Cambia esto
+            container: document.getElementById('lottie-container'),
             renderer: 'svg',
             loop: true,
             autoplay: true,
             path: '/loadscreen'
         });
 
-        // Inicialmente oculta la animación
+        
         document.getElementById('lottie-animation').style.display = 'none';
     </script>
 </body>

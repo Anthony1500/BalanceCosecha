@@ -618,7 +618,8 @@ body {
   background: transparent;
   font-family: Roboto, sans-serif;
   color: #4b5563;
-
+  
+  background-size: 100% 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -646,6 +647,8 @@ body {
   padding: 0.4em;
   border-radius: 0.75rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(215, 120, 36, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f7a043; /* Agrega un borde de 1px de grosor, sólido y de color negro */
 }
 
 .demo-page .demo-page-navigation a {
@@ -718,17 +721,18 @@ footer {
 }
 
 section {
+    background: linear-gradient(to right, #ffffff, #f6e7d7);
+    padding: 2em;
+    border-radius: 0.75rem;
+    line-height: 1.6;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    position: relative;
+    font-size: 0.875rem;
+    box-shadow: 0 10px 15px -3px rgba(215, 120, 36, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f7a043;
+  }
 
-  background: #fff;
-  padding: 2em;
-  border-radius: 0.75rem;
-  line-height: 1.6;
-  overflow: hidden;
-  margin-bottom: 2rem;
-  position: relative;
-  font-size: 0.875rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
 
 section h1 {
   font-weight: 500;
@@ -790,7 +794,7 @@ section ul {
 }
 
 details {
-  background: #f1f1f1;
+  background: transparent;
   margin: 1em -2em -1em;
   padding: 1.5em 2em;
 }

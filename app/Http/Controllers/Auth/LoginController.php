@@ -44,13 +44,22 @@ class LoginController extends Controller
     public function login(Request $request)
 {
     try {
+        $validatedData = $request->validate([
+            'logemail' => 'required|email',
+            'logpassword' => 'required',
+        ], [
+            'logemail.required' => 'El correo electrónico es obligatorio.',
+            'logemail.email' => 'El correo electrónico debe ser una dirección de correo electrónico válida.',
+            'logpassword.required' => 'La contraseña es obligatoria.',
+        ]);
+        $logemail = $validatedData['logemail'];
+        $logpassword = $validatedData['logpassword'];
 
-        $logemail = $request->input('logemail');
-        $logpassword = $request->input('logpassword');
         $credentials = [
             'email' => $logemail,
             'password' => $logpassword,
         ];
+
         if (Auth::guard('registro')->attempt($credentials)) {
             $user = Auth::guard('registro')->user();
             $request->session()->put('id_registro', $user->id_registro);
@@ -65,6 +74,7 @@ class LoginController extends Controller
         return response()->json(['error' => 'Ha ocurrido un error interno en el servidor.'], 500);
     }
 }
+
 
 
  /* public function login(Request $request)

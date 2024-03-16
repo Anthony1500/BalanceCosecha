@@ -143,7 +143,7 @@
         <div class="href-target" id="intro"></div>
         <h1 class="package-name">Registro</h1>
         <p>
-            Bienvenido usuario con número de identificación: <strong>{{ session('identificacion') }}</strong> a nuestra página de registro. Aquí es donde podras completar los datos para unirte a nuestra comunidad. Se detalla a continuación las diferentes secciones :
+            Bienvenido usuario con número de identificación: <strong>{{ session('identificacion') }}</strong> a nuestra página de registro. Aquí es donde podras completar los datos para unirte a nuestra comunidad. Se detalla a continuación las diferentes secciones:
         </p>
 
         <strong>Completar Registro:</strong>

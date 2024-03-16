@@ -50,6 +50,7 @@ $(document).ready(function() {
     }
 
     function fetchData(authToken, retries = 5) {
+
         return fetch('https://www.universal-tutorial.com/api/countries/', {
             headers: {
                 'Authorization': `Bearer ${authToken}`,
@@ -68,8 +69,8 @@ $(document).ready(function() {
         });
     }
 
-    getAuthToken()
-    .then(authToken => {
+getAuthToken()
+.then(authToken => {
         return fetchData(authToken);
     })
 .then(data => {
@@ -711,13 +712,12 @@ checkbox.addEventListener('change', function() {
 });
 
 function verificarEstado() {
-    console.log('Completados:', contadorCompletado);
 
     var estadoCheckbox = localStorage.getItem('checkbox');
     checkbox.checked = estadoCheckbox === 'true';
 
     if (contadorCompletado == 4 && checkbox.checked) {
-        console.log('if 2');
+
         btnsaveall.disabled = false;
         btnsaveall.style.display = 'block';
 
@@ -746,7 +746,6 @@ window.onload = function() {
         contadorCompletado++;
       }
 
-      // Crear un observador para cada elemento
       var observer = new MutationObserver(verificarEstado);
       observer.observe(elementos[i], { attributes: true });
     }

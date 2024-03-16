@@ -50,35 +50,40 @@ class RegisterController extends Controller
 
 
     public function register(Request $request) {
-    try {
-        $regidentificacion = $request->input('regidentificacion');
-        $regispassword = $request->input('regispassword');
-        $regisagainpassword = $request->input('regisagainpassword');
-        if ($regispassword !== $regisagainpassword) {
-            return response()->json(['error' => 'Las contraseñas no coinciden'], 400);
-        }
+        try {
+            $validatedData = $request->validate([
+                'regidentificacion' => 'required|numeric',
+                'regispassword' => 'required|min:8',
+                'regisagainpassword' => 'required|same:regispassword',
+            ], [
+                'regidentificacion.required' => 'La identificación es obligatoria.',
+                'regidentificacion.numeric' => 'La identificación debe ser un número.',
+                'regispassword.required' => 'La contraseña es obligatoria.',
+                'regispassword.min' => 'La contraseña debe tener al menos 8 caracteres.',
+                'regisagainpassword.required' => 'Es necesario confirmar la contraseña.',
+                'regisagainpassword.same' => 'Las contraseñas no coinciden.',
+            ]);
 
-        // Verifica si la 'identificación' ya existe
-        $existingRegistro = Registro::where('identificacion', $regidentificacion)->first();
-        if ($existingRegistro) {
-            return response()->json(['error' => 'El número de cédula proporcionado ya está asociado con una cuenta existente.'], 400);
+            $regidentificacion = $validatedData['regidentificacion'];
+            $regispassword = $validatedData['regispassword'];
+            $existingRegistro = Registro::where('identificacion', $regidentificacion)->first();
+            if ($existingRegistro) {
+                return response()->json(['error' => 'El número de cédula proporcionado ya está asociado con una cuenta existente.'], 400);
+            }
+            DB::beginTransaction();
+            $this->registro->identificacion = $regidentificacion;
+            $this->registro->password = Hash::make($regispassword);
+            $this->registro->save();
+            $identificacion =  $this->registro->identificacion;
+            DB::commit();
+            $request->session()->put('identificacion', $identificacion);
+            return response()->json(['message' => 'Consulta exitosa']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Ha ocurrido un error interno en el servidor.'], 500);
         }
-        // Inicia una transacción
-        DB::beginTransaction();
-        $this->registro->identificacion = $regidentificacion;
-        $this->registro->password = Hash::make($regispassword);
-        $this->registro->save();
-        $identificacion =  $this->registro->identificacion;
-        DB::commit();
-        $request->session()->put('identificacion', $identificacion);
-        // Devuelve una respuesta JSON con el mensaje
-        return response()->json(['message' => 'Consulta exitosa']);
-    } catch (\Exception $e) {
-        // Si ocurre un error, deshace la transacción
-        DB::rollBack();
-        return response()->json(['error' => 'Ha ocurrido un error interno en el servidor.'], 500);
     }
-}
+
 public function registerall(Request $request) {
 
 
@@ -98,8 +103,6 @@ public function registerall(Request $request) {
             'max' => 'El campo :attribute no debe tener más de :max caracteres.',
         ]);
 
-
-
         $identificacion = $request->session()->get('identificacion');
         $registro = Registro::where('identificacion', $identificacion)->first();
         $user = User::where('usuario', $validatedData['usuario'])
@@ -108,30 +111,22 @@ public function registerall(Request $request) {
         if (!$registro) {
             return response()->json(['error' => 'Registro no encontrado.'], 404);
         }
-        // Compara los datos enviados con los datos existentes
         $changes = array_diff($validatedData, $registro->toArray());
         if (!empty($changes)) {
-            // Si hay cambios, realiza la actualización
             DB::beginTransaction();
             try {
-                // Construye un nuevo array que sólo contenga los campos que han cambiado
                 $dataToUpdate = array_intersect_key($validatedData, $changes);
-
                 $registro->update($dataToUpdate);
-
                 if ($user && $user->id_registro != $registro->id_registro) {
-                    // Si el usuario ya existe y no es el mismo que se está actualizando, devuelve un error
                     return response()->json(['error' => 'El nombre de usuario o correo electrónico ya está en uso.'], 409);
                 } else {
                     if (!$user) {
-                        // Si el usuario no existe, crea una nueva instancia de User
                         $user = new User;
                     }
-                    // Realiza la actualización
                     $user->usuario = $validatedData['usuario'];
                     $user->email = $validatedData['email'];
                     $user->password = $registro->password;
-                    $user->id_registro = $registro->id_registro; // Añade el id del registro a la tabla de usuarios
+                    $user->id_registro = $registro->id_registro;
                     $user->save();
                     DB::commit();
                     return response()->json(['success' => 'Registro realizado con éxito.'], 200);
@@ -140,7 +135,6 @@ public function registerall(Request $request) {
                 DB::rollBack();
                 $errorCode = $e->errorInfo[1];
                 if($errorCode == 1062){
-                    // Obtén el mensaje de error
                     $errorString = $e->errorInfo[2];
                     if (strpos($errorString, 'usuario')) {
                         return response()->json(['error' => 'El nombre de usuario ya está en uso.'], 409);
@@ -148,15 +142,12 @@ public function registerall(Request $request) {
                         return response()->json(['error' => 'El correo electrónico ya está en uso.'], 409);
                     }
                 }
-                // $errorMessage = $e->getMessage();
                 return response()->json(['error' => 'Error en la base de datos al completar el registro.'], 400);
             } catch (\Exception $e) {
                 DB::rollBack();
-               // $errorMessage = $e->getMessage();
                 return response()->json(['error' =>  'Datos ingresados ya existentes en la base'], 409);
             }
         } else {
-            // Si no hay cambios, no realiza la actualización
             return response()->json(['success' ], 204);
         }
 
@@ -164,11 +155,8 @@ public function registerall(Request $request) {
 
 public function logout(Request $request) {
     Auth::guard('registro')->logout();
-
     $request->session()->invalidate();
-
     $request->session()->regenerateToken();
-
     return response()->json(['message' => 'Sesión cerrada con éxito.'], 200);
 }
 
