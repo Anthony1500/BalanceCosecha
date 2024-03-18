@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller
@@ -19,4 +20,22 @@ class ForgotPasswordController extends Controller
     */
 
     use SendsPasswordResetEmails;
+    public function sendResetLinkEmail($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $this->broker()->sendResetLink(
+                ['email' => $user->email]
+            );
+        }
+    }
+
+
+
+
+
+
+
+
+
 }

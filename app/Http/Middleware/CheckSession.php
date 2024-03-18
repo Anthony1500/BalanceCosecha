@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckSession
@@ -11,17 +12,27 @@ class CheckSession
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Closure  $next
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next): Response
     {
-      /*  // Lista de rutas que se deben excluir
-        $excludedRoutes = ['LoginForm', '/loadscreen', '/','auth.login','auth.register','/RegisterForm'];
-
-        if (!$request->session()->has('identificacion') && !in_array($request->route()->getName(), $excludedRoutes)) {
-            return redirect('LoginForm')->with('message', 'Sesión expirada o cerrada');
+        if (!Auth::guard('registro')->check()) {
+            $currentRouteName = $request->route()->getName();
+            $excludedRoutes = [
+                'LoginForm',
+                'loadscreen',
+                'auth.login',
+                'auth.register',
+                'inicio',
+                'loadscreen',
+                'reset-password',
+            ];
+            if (!in_array($currentRouteName, $excludedRoutes)) {
+                return redirect('LoginForm')->with('message', 'Sesión expirada o cerrada');
+            }
         }
-*/
+
         return $next($request);
     }
 }
