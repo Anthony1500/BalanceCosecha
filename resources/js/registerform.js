@@ -697,19 +697,21 @@ function desmarcarComoCompletado(id) {
 }
 
 
-var saveallMarcado = false;
+
 
 checkbox.addEventListener('change', function() {
     localStorage.setItem('checkbox', this.checked);
     verificarEstado();
-    if (!saveallMarcado) {
+    if (this.checked) {
         marcarComoCompletado('saveall');
-        saveallMarcado = true;
+
     } else {
         desmarcarComoCompletado('saveall');
-        saveallMarcado = false;
+
     }
+
 });
+
 
 function verificarEstado() {
 

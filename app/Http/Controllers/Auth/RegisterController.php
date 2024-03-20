@@ -75,8 +75,8 @@ class RegisterController extends Controller
             $this->registro->password = Hash::make($regispassword);
             $this->registro->save();
 
-            Auth::login($this->registro);
-            
+            Auth::guard('registro')->login($this->registro);
+
             $identificacion =  $this->registro->identificacion;
             DB::commit();
             $request->session()->put('identificacion', $identificacion);
